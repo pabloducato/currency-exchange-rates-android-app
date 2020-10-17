@@ -2,6 +2,7 @@ package com.android.app.currency.exchange.rates;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,6 +57,13 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             };
+
+    AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            view.setBackgroundColor(Color.BLUE);
+        }
+    };
 
     private void showStartDialog() {
         new AlertDialog.Builder(this)
