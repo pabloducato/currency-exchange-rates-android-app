@@ -2,18 +2,29 @@ package com.android.app.currency.exchange.rates;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Color;
+
 import androidx.annotation.NonNull;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import androidx.fragment.app.Fragment;
+import com.google.android.material.navigation.NavigationView;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 
 public class MainActivity extends AppCompatActivity {
+
+    private DrawerLayout drawerLayout;
+
+    public BottomNavigationView bottomNavigationView;
+    public NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,35 +36,82 @@ public class MainActivity extends AppCompatActivity {
             showStartDialog();
 
         }
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(onBottomNavigationItemSelectedListener);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(onNavigationItemSelectedListener);
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener =
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+        super.onBackPressed();
+    }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener onBottomNavigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment selectedFragment = null;
                     switch (item.getItemId()) {
                         case R.id.nav_home:
-                            selectedFragment = new HomeFragment();
+                            navigationView.setCheckedItem(R.id.drawer_navigation_home);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new HomeFragment()).commit();
                             break;
                         case R.id.nav_view_list:
-                            selectedFragment = new ListFragment();
+                            navigationView.setCheckedItem(R.id.drawer_navigation_list);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new ListFragment()).commit();
                             break;
                         case R.id.nav_settings:
-                            selectedFragment = new SettingsFragment();
+                            navigationView.setCheckedItem(R.id.drawer_navigation_settings);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new SettingsFragment()).commit();
                             break;
                         case R.id.nav_notifications:
-                            selectedFragment = new NotificationsFragment();
+                            navigationView.setCheckedItem(R.id.drawer_navigation_notifications);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new NotificationsFragment()).commit();
                             break;
                         case R.id.nav_info:
-                            selectedFragment = new InfoFragment();
+                            navigationView.setCheckedItem(R.id.drawer_navigation_info);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new InfoFragment()).commit();
                             break;
                     }
+                    return true;
+                }
+            };
 
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+    private NavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener =
+            new NavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.drawer_navigation_home:
+                            bottomNavigationView.setSelectedItemId(R.id.nav_home);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new HomeFragment()).commit();
+                            break;
+                        case R.id.drawer_navigation_list:
+                            bottomNavigationView.setSelectedItemId(R.id.nav_view_list);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new ListFragment()).commit();
+                            break;
+                        case R.id.drawer_navigation_settings:
+                            bottomNavigationView.setSelectedItemId(R.id.nav_settings);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new SettingsFragment()).commit();
+                            break;
+                        case R.id.drawer_navigation_notifications:
+                            bottomNavigationView.setSelectedItemId(R.id.nav_notifications);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new NotificationsFragment()).commit();
+                            break;
+                        case R.id.drawer_navigation_info:
+                            bottomNavigationView.setSelectedItemId(R.id.nav_info);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new InfoFragment()).commit();
+                            break;
+                    }
                     return true;
                 }
             };
@@ -61,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
     AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            view.setBackgroundColor(Color.BLUE);
+            view.setBackgroundColor(getResources().getColor(android.R.color.holo_purple));
         }
     };
 
@@ -81,4 +139,6 @@ public class MainActivity extends AppCompatActivity {
         editor.putBoolean("firstStart", false);
         editor.apply();
     }
+
+
 }
