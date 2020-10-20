@@ -14,6 +14,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
 
     public BottomNavigationView bottomNavigationView;
+    public BottomNavigationView topNavigationView;
     public NavigationView navigationView;
 
     @Override
@@ -36,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
             showStartDialog();
 
         }
+        topNavigationView = findViewById(R.id.top_navigation);
+        topNavigationView.getMenu().setGroupCheckable(0, false, true);
+        topNavigationView.setOnNavigationItemSelectedListener(onBottomNavigationItemSelectedListener);
+        topNavigationView.getMenu().findItem(R.id.nav_menu_open).setChecked(false);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(onBottomNavigationItemSelectedListener);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
@@ -43,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
+        navigationView.getMenu().getItem(0).setChecked(true);
         navigationView.setNavigationItemSelectedListener(onNavigationItemSelectedListener);
     }
 
@@ -81,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
                             navigationView.setCheckedItem(R.id.drawer_navigation_info);
                             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new InfoFragment()).commit();
                             break;
+                        case R.id.nav_menu_open:
+                            drawerLayout.openDrawer(GravityCompat.START);
                     }
                     return true;
                 }
@@ -112,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
                             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new InfoFragment()).commit();
                             break;
                     }
+                    drawerLayout.closeDrawer(GravityCompat.START);
                     return true;
                 }
             };

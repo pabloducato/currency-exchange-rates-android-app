@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_menu_open"
+        android:checked="false"
+        android:icon="@drawable/ic_baseline_menu_open_24"
+        android:title="Drawer" />
+
+    <item
+        android:enabled="false"
+        android:title="Empty1" />
+
+    <item
+        android:enabled="false"
+        android:title="Empty2" />
+
+    <item
+        android:enabled="false"
+        android:title="Empty3" />
+
+    <item
+        android:enabled="false"
+        android:title="Empty4" />
+
+</menu>
