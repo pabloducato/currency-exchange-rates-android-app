@@ -1,10 +1,13 @@
 package com.android.app.currency.exchange.rates;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +23,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -29,18 +34,31 @@ import java.util.Locale;
 public class ListFragment extends Fragment {
     private TextView textView;
     private RequestQueue requestQueue;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_list, container, false);
-        textView = (TextView) fragmentView.findViewById(R.id.rates_view_result);
-        requestQueue = Volley.newRequestQueue(getActivity());
-        jsonParse();
+        ArrayList<OptionItem> optionList = new ArrayList<>();
+        optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut", "Waluty", "Opis"));
+        optionList.add(new OptionItem(R.drawable.ic_baseline_star_24, "Kursy złota", "Złoto", "Opis"));
+        optionList.add(new OptionItem(R.drawable.ic_baseline_monetization_on_24, "Kursy kryptowalut", "Kryptowaluty", "Opis"));
+        recyclerView = (RecyclerView) fragmentView.findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(getActivity());
+        adapter = new OptionAdapter(optionList);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+        //        textView = (TextView) fragmentView.findViewById(R.id.rates_view_result);
+//        requestQueue = Volley.newRequestQueue(getActivity());
+//        jsonParseRates();
         return fragmentView;
     }
 
-    private void jsonParse() {
+    private void jsonParseRates() {
         Calendar calendar = Calendar.getInstance();
         Date date = new Date();
         String dateString = "";
