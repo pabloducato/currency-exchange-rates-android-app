@@ -1,6 +1,6 @@
-package com.android.app.currency.exchange.rates;
+package com.android.app.currency.exchange.rates.fragments;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,21 +9,26 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.app.currency.exchange.rates.activities.CryptoCurrenciesActivity;
+import com.android.app.currency.exchange.rates.activities.CurrenciesActivity;
+import com.android.app.currency.exchange.rates.activities.GoldActivity;
+import com.android.app.currency.exchange.rates.items.OptionItem;
+import com.android.app.currency.exchange.rates.R;
+import com.android.app.currency.exchange.rates.adapters.OptionAdapter;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,28 +36,30 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class ListFragment extends Fragment {
+import static android.content.ContentValues.TAG;
+
+public class ListFragment extends Fragment implements OptionAdapter.OnItemClickListener {
     private TextView textView;
     private RequestQueue requestQueue;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private OptionAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<OptionItem> optionList = new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_list, container, false);
-        ArrayList<OptionItem> optionList = new ArrayList<>();
         optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut", "Waluty", "Opis"));
         optionList.add(new OptionItem(R.drawable.ic_baseline_star_24, "Kursy złota", "Złoto", "Opis"));
         optionList.add(new OptionItem(R.drawable.ic_baseline_monetization_on_24, "Kursy kryptowalut", "Kryptowaluty", "Opis"));
         recyclerView = (RecyclerView) fragmentView.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
-        adapter = new OptionAdapter(optionList);
+        adapter = new OptionAdapter(optionList, this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-        //        textView = (TextView) fragmentView.findViewById(R.id.rates_view_result);
+//        textView = (TextView) fragmentView.findViewById(R.id.rates_view_result);
 //        requestQueue = Volley.newRequestQueue(getActivity());
 //        jsonParseRates();
         return fragmentView;
@@ -93,5 +100,30 @@ public class ListFragment extends Fragment {
         }, error -> error.printStackTrace());
 
         requestQueue.add(jsonArrayRequest);
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Intent intent;
+        switch (position) {
+            case 0:
+                Log.d(TAG, "onItemClick: clicked.");
+                intent = new Intent(getActivity(), CurrenciesActivity.class);
+                intent.putExtra("some_object", "something_else");
+                startActivity(intent);
+                break;
+            case 1:
+                Log.d(TAG, "onItemClick: clicked.");
+                intent = new Intent(getActivity(), GoldActivity.class);
+                intent.putExtra("some_object", "something_else");
+                startActivity(intent);
+                break;
+            case 2:
+                Log.d(TAG, "onItemClick: clicked.");
+                intent = new Intent(getActivity(), CryptoCurrenciesActivity.class);
+                intent.putExtra("some_object", "something_else");
+                startActivity(intent);
+                break;
+        }
     }
 }

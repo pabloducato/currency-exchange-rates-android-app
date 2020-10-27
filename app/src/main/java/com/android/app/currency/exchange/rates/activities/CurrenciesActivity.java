@@ -1,10 +1,17 @@
-package com.android.app.currency.exchange.rates;
+package com.android.app.currency.exchange.rates.activities;
 
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.android.app.currency.exchange.rates.R;
+import com.android.app.currency.exchange.rates.fragments.CurrenciesFragment;
 import com.android.app.currency.exchange.rates.fragments.HomeFragment;
 import com.android.app.currency.exchange.rates.fragments.InfoFragment;
 import com.android.app.currency.exchange.rates.fragments.ListFragment;
@@ -13,16 +20,7 @@ import com.android.app.currency.exchange.rates.fragments.SettingsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-import android.view.MenuItem;
-
-public class MainActivity extends AppCompatActivity {
+public class CurrenciesActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
 
@@ -30,28 +28,25 @@ public class MainActivity extends AppCompatActivity {
     public BottomNavigationView topNavigationView;
     public NavigationView navigationView;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferences", MODE_PRIVATE);
-        boolean firstStart = sharedPreferences.getBoolean("firstStart", true);
-        if (firstStart) {
-            showStartDialog();
+    private static final String TAG = "CurrenciesActivity";
 
-        }
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_currencies);
         topNavigationView = findViewById(R.id.top_navigation);
         topNavigationView.getMenu().setGroupCheckable(0, false, true);
         topNavigationView.setOnNavigationItemSelectedListener(onBottomNavigationItemSelectedListener);
         topNavigationView.getMenu().findItem(R.id.nav_menu_open).setChecked(false);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.getMenu().getItem(1).setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(onBottomNavigationItemSelectedListener);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CurrenciesFragment()).commit();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
-        navigationView.getMenu().getItem(0).setChecked(true);
+        navigationView.getMenu().getItem(1).setChecked(true);
         navigationView.setNavigationItemSelectedListener(onNavigationItemSelectedListener);
     }
 
@@ -127,22 +122,5 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             };
-
-    private void showStartDialog() {
-        new AlertDialog.Builder(this)
-                .setTitle("One Time Dialog")
-                .setMessage("This should only be shown once")
-                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .create().show();
-        SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("firstStart", false);
-        editor.apply();
-    }
 
 }

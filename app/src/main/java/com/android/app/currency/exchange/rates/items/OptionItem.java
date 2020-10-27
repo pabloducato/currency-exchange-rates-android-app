@@ -1,4 +1,4 @@
-package com.android.app.currency.exchange.rates;
+package com.android.app.currency.exchange.rates.items;
 
 public class OptionItem {
     private int mImageResource;
