@@ -18,9 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.CryptoCurrenciesActivity"
+        <activity android:name=".activities.CryptoActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity android:name=".activities.CurrenciesActivity"
+        <activity android:name=".activities.CurrencyActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".activities.GoldActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>

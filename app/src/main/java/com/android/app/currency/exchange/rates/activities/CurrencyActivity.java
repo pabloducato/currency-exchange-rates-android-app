@@ -11,7 +11,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.android.app.currency.exchange.rates.R;
-import com.android.app.currency.exchange.rates.fragments.CryptoCurrenciesFragment;
+import com.android.app.currency.exchange.rates.fragments.CurrencyFragment;
 import com.android.app.currency.exchange.rates.fragments.HomeFragment;
 import com.android.app.currency.exchange.rates.fragments.InfoFragment;
 import com.android.app.currency.exchange.rates.fragments.ListFragment;
@@ -20,7 +20,7 @@ import com.android.app.currency.exchange.rates.fragments.SettingsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-public class CryptoCurrenciesActivity extends AppCompatActivity {
+public class CurrencyActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
 
@@ -28,12 +28,12 @@ public class CryptoCurrenciesActivity extends AppCompatActivity {
     public BottomNavigationView topNavigationView;
     public NavigationView navigationView;
 
-    private static final String TAG = "CryptoCurrenciesActivit";
+    private static final String TAG = "CurrenciesActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_crypto_currencies);
+        setContentView(R.layout.activity_currencies);
         topNavigationView = findViewById(R.id.top_navigation);
         topNavigationView.getMenu().setGroupCheckable(0, false, true);
         topNavigationView.setOnNavigationItemSelectedListener(onBottomNavigationItemSelectedListener);
@@ -41,7 +41,7 @@ public class CryptoCurrenciesActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.getMenu().getItem(1).setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(onBottomNavigationItemSelectedListener);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CryptoCurrenciesFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CurrencyFragment()).commit();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -122,4 +122,5 @@ public class CryptoCurrenciesActivity extends AppCompatActivity {
                     return true;
                 }
             };
+
 }

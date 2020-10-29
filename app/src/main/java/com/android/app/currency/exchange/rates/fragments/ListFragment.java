@@ -15,8 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.android.app.currency.exchange.rates.activities.CryptoCurrenciesActivity;
-import com.android.app.currency.exchange.rates.activities.CurrenciesActivity;
+import com.android.app.currency.exchange.rates.activities.CryptoActivity;
+import com.android.app.currency.exchange.rates.activities.CurrencyActivity;
 import com.android.app.currency.exchange.rates.activities.GoldActivity;
 import com.android.app.currency.exchange.rates.items.OptionItem;
 import com.android.app.currency.exchange.rates.R;
@@ -108,7 +108,7 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
         switch (position) {
             case 0:
                 Log.d(TAG, "onItemClick: clicked.");
-                intent = new Intent(getActivity(), CurrenciesActivity.class);
+                intent = new Intent(getActivity(), CurrencyActivity.class);
                 intent.putExtra("some_object", "something_else");
                 startActivity(intent);
                 break;
@@ -120,7 +120,7 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
                 break;
             case 2:
                 Log.d(TAG, "onItemClick: clicked.");
-                intent = new Intent(getActivity(), CryptoCurrenciesActivity.class);
+                intent = new Intent(getActivity(), CryptoActivity.class);
                 intent.putExtra("some_object", "something_else");
                 startActivity(intent);
                 break;

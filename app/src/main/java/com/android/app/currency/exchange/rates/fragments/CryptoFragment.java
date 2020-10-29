@@ -14,32 +14,32 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.app.currency.exchange.rates.R;
-import com.android.app.currency.exchange.rates.activities.GoldActivity;
-import com.android.app.currency.exchange.rates.adapters.GoldAdapter;
-import com.android.app.currency.exchange.rates.items.GoldItem;
+import com.android.app.currency.exchange.rates.activities.CryptoActivity;
+import com.android.app.currency.exchange.rates.adapters.CryptoAdapter;
+import com.android.app.currency.exchange.rates.items.CryptoItem;
 
 import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
 
-public class GoldFragment extends Fragment implements GoldAdapter.OnItemClickListener {
+public class CryptoFragment extends Fragment implements CryptoAdapter.OnItemClickListener {
 
     private RecyclerView recyclerView;
-    private GoldAdapter adapter;
+    private CryptoAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<GoldItem> goldList = new ArrayList<>();
+    private ArrayList<CryptoItem> cryptoList = new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View fragmentView = inflater.inflate(R.layout.fragment_gold, container, false);
-        goldList.add(new GoldItem(R.drawable.ic_baseline_euro_24, "Kursy walut", "Waluty", "Opis"));
-        goldList.add(new GoldItem(R.drawable.ic_baseline_star_24, "Kursy złota", "Złoto", "Opis"));
-        goldList.add(new GoldItem(R.drawable.ic_baseline_monetization_on_24, "Kursy kryptowalut", "Kryptowaluty", "Opis"));
-        recyclerView = (RecyclerView) fragmentView.findViewById(R.id.gold_recycler_view);
+        View fragmentView = inflater.inflate(R.layout.fragment_crypto, container, false);
+        cryptoList.add(new CryptoItem(R.drawable.ic_baseline_euro_24, "Kursy walut", "Waluty", "Opis"));
+        cryptoList.add(new CryptoItem(R.drawable.ic_baseline_star_24, "Kursy złota", "Złoto", "Opis"));
+        cryptoList.add(new CryptoItem(R.drawable.ic_baseline_monetization_on_24, "Kursy kryptowalut", "Kryptowaluty", "Opis"));
+        recyclerView = (RecyclerView) fragmentView.findViewById(R.id.crypto_recycler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
-        adapter = new GoldAdapter(goldList, this);
+        adapter = new CryptoAdapter(cryptoList, this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         return fragmentView;
@@ -51,7 +51,7 @@ public class GoldFragment extends Fragment implements GoldAdapter.OnItemClickLis
         switch (position) {
             default:
                 Log.d(TAG, "onItemClick: clicked.");
-                intent = new Intent(getActivity(), GoldActivity.class);
+                intent = new Intent(getActivity(), CryptoActivity.class);
                 intent.putExtra("some_object", "something_else");
                 startActivity(intent);
                 break;
