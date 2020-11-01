@@ -1,8 +1,6 @@
 package com.android.app.currency.exchange.rates.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.app.currency.exchange.rates.R;
-import com.android.app.currency.exchange.rates.activities.CryptoActivity;
 import com.android.app.currency.exchange.rates.adapters.CryptoAdapter;
 import com.android.app.currency.exchange.rates.items.CryptoItem;
 
 import java.util.ArrayList;
-
-import static android.content.ContentValues.TAG;
 
 public class CryptoFragment extends Fragment implements CryptoAdapter.OnItemClickListener {
 
@@ -33,10 +28,11 @@ public class CryptoFragment extends Fragment implements CryptoAdapter.OnItemClic
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_crypto, container, false);
-        cryptoList.add(new CryptoItem(R.drawable.ic_baseline_euro_24, "Kursy walut", "Waluty", "Opis"));
-        cryptoList.add(new CryptoItem(R.drawable.ic_baseline_star_24, "Kursy złota", "Złoto", "Opis"));
+        if (cryptoList != null || cryptoList.size() > 0) {
+            cryptoList.clear();
+        }
         cryptoList.add(new CryptoItem(R.drawable.ic_baseline_monetization_on_24, "Kursy kryptowalut", "Kryptowaluty", "Opis"));
-        recyclerView = (RecyclerView) fragmentView.findViewById(R.id.crypto_recycler_view);
+        recyclerView = fragmentView.findViewById(R.id.crypto_recycler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         adapter = new CryptoAdapter(cryptoList, this);
@@ -47,14 +43,14 @@ public class CryptoFragment extends Fragment implements CryptoAdapter.OnItemClic
 
     @Override
     public void onItemClick(int position) {
-        Intent intent;
-        switch (position) {
-            default:
-                Log.d(TAG, "onItemClick: clicked.");
-                intent = new Intent(getActivity(), CryptoActivity.class);
-                intent.putExtra("some_object", "something_else");
-                startActivity(intent);
-                break;
-        }
+//        Intent intent;
+//        switch (position) {
+//            default:
+//                Log.d(TAG, "onItemClick: clicked.");
+//                intent = new Intent(getActivity(), CryptoActivity.class);
+//                intent.putExtra("some_object", "something_else");
+//                startActivity(intent);
+//                break;
+//        }
     }
 }

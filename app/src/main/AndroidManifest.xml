@@ -18,12 +18,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.CryptoActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity android:name=".activities.CurrencyActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity android:name=".activities.GoldActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

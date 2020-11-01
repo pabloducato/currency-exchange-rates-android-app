@@ -1,6 +1,5 @@
 package com.android.app.currency.exchange.rates.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,12 +27,15 @@ public class CurrencyFragment extends Fragment implements CurrencyAdapter.OnItem
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View fragmentView = inflater.inflate(R.layout.fragment_currency, container, false);
+        if (currencyList != null || currencyList.size() > 0) {
+            currencyList.clear();
+        }
         assert getArguments() != null;
         String[] arrayCurrencyList = getArguments().getStringArray("currency");
-        for (int i = 0; i < arrayCurrencyList.length; i++) {
-            currencyList.add(new CurrencyItem(R.drawable.ic_baseline_euro_24, arrayCurrencyList[i].split(";")[0], arrayCurrencyList[i].split(";")[1], arrayCurrencyList[i].split(";")[2].substring(0,4), arrayCurrencyList[i].split(";")[2].substring(0,4)));
+        for (String s : arrayCurrencyList) {
+            currencyList.add(new CurrencyItem(R.drawable.ic_baseline_euro_24, s.split(";")[0], s.split(";")[1], s.split(";")[2].substring(0, 4), s.split(";")[2].substring(0, 4)));
         }
-        View fragmentView = inflater.inflate(R.layout.fragment_currency, container, false);
         recyclerView = fragmentView.findViewById(R.id.currency_recycler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -45,14 +47,19 @@ public class CurrencyFragment extends Fragment implements CurrencyAdapter.OnItem
 
     @Override
     public void onItemClick(int position) {
-        Intent intent;
-        switch (position) {
-            default:
+//        Intent intent;
+//        switch (position) {
+//            default:
 //                Log.d(TAG, "onItemClick: clicked.");
 //                intent = new Intent(getActivity(), CurrencyActivity.class);
 //                intent.putExtra("some_object", "something_else");
 //                startActivity(intent);
 //                break;
-        }
+//        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 }

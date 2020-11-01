@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         topNavigationView.setOnNavigationItemSelectedListener(onBottomNavigationItemSelectedListener);
         topNavigationView.getMenu().findItem(R.id.nav_menu_open).setEnabled(true);
         topNavigationView.getMenu().findItem(R.id.nav_menu_open).setChecked(false);
+        topNavigationView.getMenu().findItem(R.id.nav_menu_return).setEnabled(true);
+        topNavigationView.getMenu().findItem(R.id.nav_menu_return).setChecked(false);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(onBottomNavigationItemSelectedListener);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
@@ -62,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
-        super.onBackPressed();
     }
 
     private final BottomNavigationView.OnNavigationItemSelectedListener onBottomNavigationItemSelectedListener =
@@ -92,6 +93,9 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case R.id.nav_menu_open:
                             drawerLayout.openDrawer(GravityCompat.START);
+                            break;
+                        case R.id.nav_menu_return:
+                            onBackPressed();
                             break;
                     }
                     return true;

@@ -1,23 +1,20 @@
 package com.android.app.currency.exchange.rates.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.app.currency.exchange.rates.VolleySingleton;
-import com.android.app.currency.exchange.rates.activities.CryptoActivity;
-import com.android.app.currency.exchange.rates.activities.CurrencyActivity;
-import com.android.app.currency.exchange.rates.activities.GoldActivity;
 import com.android.app.currency.exchange.rates.items.OptionItem;
 import com.android.app.currency.exchange.rates.R;
 import com.android.app.currency.exchange.rates.adapters.OptionAdapter;
@@ -35,8 +32,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
-import static android.content.ContentValues.TAG;
+import java.util.Objects;
 
 public class ListFragment extends Fragment implements OptionAdapter.OnItemClickListener {
 
@@ -52,6 +48,9 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_list, container, false);
+        if (optionList != null || optionList.size() > 0) {
+            optionList.clear();
+        }
         optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut", "Waluty", "Opis"));
         optionList.add(new OptionItem(R.drawable.ic_baseline_star_24, "Kursy złota", "Złoto", "Opis"));
         optionList.add(new OptionItem(R.drawable.ic_baseline_monetization_on_24, "Kursy kryptowalut", "Kryptowaluty", "Opis"));
@@ -66,7 +65,6 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
 
     @Override
     public void onItemClick(int position) {
-        Intent intent;
         String dateString, URL;
         JsonArrayRequest jsonArrayRequest;
         switch (position) {
@@ -85,10 +83,16 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
                 requestQueue.add(jsonArrayRequest);
                 break;
             case 2:
-                Log.d(TAG, "onItemClick: clicked.");
-                intent = new Intent(getActivity(), CryptoActivity.class);
-                intent.putExtra("some_object", "something_else");
-                startActivity(intent);
+                CryptoFragment cryptoFragment = new CryptoFragment();
+//                Bundle bundle = new Bundle();
+//                String arrayGoldString = goldList.get(0);
+//                bundle.putString("crypto", arrayGoldString);
+//                cryptoFragment.setArguments(bundle);
+                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_second_container, cryptoFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
                 break;
         }
     }
@@ -98,12 +102,20 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
         Date date = new Date();
         String dateString = "";
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat sdfHour = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        String hour = sdfHour.format(calendar.getTime());
+        String start = "00:00";
+        String stop = "10:00";
         if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
             calendar.add(Calendar.DATE, -1);
             date = calendar.getTime();
             dateString = dateFormat.format(date);
         } else if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
             calendar.add(Calendar.DATE, -2);
+            date = calendar.getTime();
+            dateString = dateFormat.format(date);
+        } else if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY && (hour.compareTo(start) >= 0 && hour.compareTo(stop) <= 0)) {
+            calendar.add(Calendar.DATE, -3);
             date = calendar.getTime();
             dateString = dateFormat.format(date);
         } else {
@@ -115,6 +127,9 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
     private JsonArrayRequest returnJsonCurrencyArrayRequest(String URL) {
         return new JsonArrayRequest(Request.Method.GET, URL, null, response -> {
             try {
+                if (currencyList != null || currencyList.size() > 0) {
+                    currencyList.clear();
+                }
                 JSONObject ratesList = response.getJSONObject(0);
                 JSONArray rates = ratesList.getJSONArray("rates");
                 for (int i = 0; i < rates.length(); i++) {
@@ -124,10 +139,16 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
                     double mid = rate.getDouble("mid");
                     currencyList.add(i, currency + ";" + code + ";" + mid);
                 }
-                Log.d(TAG, "onItemClick: clicked.");
-                Intent intent = new Intent(getActivity(), CurrencyActivity.class);
-                intent.putExtra("currency", currencyList);
-                startActivity(intent);
+                CurrencyFragment currencyFragment = new CurrencyFragment();
+                Bundle bundle = new Bundle();
+                String[] arrayCurrencyList = currencyList.toArray(new String[0]);
+                bundle.putStringArray("currency", arrayCurrencyList);
+                currencyFragment.setArguments(bundle);
+                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_second_container, currencyFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -137,14 +158,23 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
     private JsonArrayRequest returnJsonGoldArrayRequest(String URL) {
         return new JsonArrayRequest(Request.Method.GET, URL, null, response -> {
             try {
+                if (goldList != null || goldList.size() > 0) {
+                    goldList.clear();
+                }
                 JSONObject goldResponse = response.getJSONObject(0);
                 String goldDate = goldResponse.getString("data");
                 String goldPrice = goldResponse.getString("cena");
                 goldList.add(0, goldDate + ";" + goldPrice);
-                Log.d(TAG, "onItemClick: clicked.");
-                Intent intent = new Intent(getActivity(), GoldActivity.class);
-                intent.putExtra("gold", goldList);
-                startActivity(intent);
+                GoldFragment goldFragment = new GoldFragment();
+                Bundle bundle = new Bundle();
+                String arrayGoldString = goldList.get(0);
+                bundle.putString("gold", arrayGoldString);
+                goldFragment.setArguments(bundle);
+                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_second_container, goldFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
