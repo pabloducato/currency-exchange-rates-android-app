@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import com.android.app.currency.exchange.rates.VolleySingleton;
 import com.android.app.currency.exchange.rates.activities.CryptoActivity;
 import com.android.app.currency.exchange.rates.activities.CurrencyActivity;
+import com.android.app.currency.exchange.rates.activities.GoldActivity;
 import com.android.app.currency.exchange.rates.items.OptionItem;
 import com.android.app.currency.exchange.rates.R;
 import com.android.app.currency.exchange.rates.adapters.OptionAdapter;
@@ -38,13 +39,14 @@ import java.util.Locale;
 import static android.content.ContentValues.TAG;
 
 public class ListFragment extends Fragment implements OptionAdapter.OnItemClickListener {
-    public static final String API_CURRENCY_RESPONSE = "com.android.app.currency.exchange.rates.fragments.API_CURRENCY_RESPONSE";
+
     private RequestQueue requestQueue;
     private RecyclerView recyclerView;
     private OptionAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<OptionItem> optionList = new ArrayList<>();
     private ArrayList<String> currencyList = new ArrayList<>();
+    private ArrayList<String> goldList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -81,10 +83,6 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
                 URL = "https://api.nbp.pl/api/cenyzlota/" + dateString + "/" + "?format=json";
                 jsonArrayRequest = returnJsonGoldArrayRequest(URL);
                 requestQueue.add(jsonArrayRequest);
-//                Log.d(TAG, "onItemClick: clicked.");
-//                intent = new Intent(getActivity(), GoldActivity.class);
-//                intent.putExtra("some_object", "something_else");
-//                startActivity(intent);
                 break;
             case 2:
                 Log.d(TAG, "onItemClick: clicked.");
@@ -127,38 +125,29 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
                     currencyList.add(i, currency + ";" + code + ";" + mid);
                 }
                 Log.d(TAG, "onItemClick: clicked.");
-                Intent intent;
-                intent = new Intent(getActivity(), CurrencyActivity.class);
+                Intent intent = new Intent(getActivity(), CurrencyActivity.class);
                 intent.putExtra("currency", currencyList);
                 startActivity(intent);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
         }, Throwable::printStackTrace);
     }
 
     private JsonArrayRequest returnJsonGoldArrayRequest(String URL) {
         return new JsonArrayRequest(Request.Method.GET, URL, null, response -> {
             try {
-                JSONObject ratesList = response.getJSONObject(0);
-                JSONArray rates = ratesList.getJSONArray("rates");
-                for (int i = 0; i < rates.length(); i++) {
-                    JSONObject rate = rates.getJSONObject(i);
-                    String currency = rate.getString("currency");
-                    String code = rate.getString("code");
-                    double mid = rate.getDouble("mid");
-                    currencyList.add(i, currency + ";" + code + ";" + mid);
-                }
+                JSONObject goldResponse = response.getJSONObject(0);
+                String goldDate = goldResponse.getString("data");
+                String goldPrice = goldResponse.getString("cena");
+                goldList.add(0, goldDate + ";" + goldPrice);
                 Log.d(TAG, "onItemClick: clicked.");
-                Intent intent;
-                intent = new Intent(getActivity(), CurrencyActivity.class);
-                intent.putExtra("currency", currencyList);
+                Intent intent = new Intent(getActivity(), GoldActivity.class);
+                intent.putExtra("gold", goldList);
                 startActivity(intent);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
         }, Throwable::printStackTrace);
     }
 }

@@ -35,6 +35,7 @@ public class GoldAdapter extends RecyclerView.Adapter<GoldAdapter.GoldViewHolder
         public TextView rateAbbreviation;
         public TextView rateValue;
         public TextView rateDescription;
+        public TextView rateBigValue;
         GoldAdapter.OnItemClickListener onItemClickListener;
 
         public GoldViewHolder(@NonNull View itemView, GoldAdapter.OnItemClickListener onItemClickListener) {
@@ -43,6 +44,7 @@ public class GoldAdapter extends RecyclerView.Adapter<GoldAdapter.GoldViewHolder
             rateAbbreviation = itemView.findViewById(R.id.gold_rate_abbreviation);
             rateValue = itemView.findViewById(R.id.gold_rate_value);
             rateDescription = itemView.findViewById(R.id.gold_rate_description);
+            rateBigValue = itemView.findViewById(R.id.gold_rate_big_value);
             this.onItemClickListener = onItemClickListener;
             itemView.setOnClickListener(this);
         }
@@ -67,6 +69,7 @@ public class GoldAdapter extends RecyclerView.Adapter<GoldAdapter.GoldViewHolder
         holder.rateAbbreviation.setText(currentItem.getRateAbbreviation());
         holder.rateValue.setText(currentItem.getRateValue());
         holder.rateDescription.setText(currentItem.getRateDescription());
+        holder.rateBigValue.setText(currentItem.getRateBigValue());
     }
 
     @Override

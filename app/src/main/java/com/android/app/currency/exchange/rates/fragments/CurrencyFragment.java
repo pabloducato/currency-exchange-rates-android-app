@@ -28,6 +28,7 @@ public class CurrencyFragment extends Fragment implements CurrencyAdapter.OnItem
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        assert getArguments() != null;
         String[] arrayCurrencyList = getArguments().getStringArray("currency");
         for (int i = 0; i < arrayCurrencyList.length; i++) {
             currencyList.add(new CurrencyItem(R.drawable.ic_baseline_euro_24, arrayCurrencyList[i].split(";")[0], arrayCurrencyList[i].split(";")[1], arrayCurrencyList[i].split(";")[2].substring(0,4), arrayCurrencyList[i].split(";")[2].substring(0,4)));

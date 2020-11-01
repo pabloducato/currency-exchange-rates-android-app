@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         topNavigationView = findViewById(R.id.top_navigation);
         topNavigationView.getMenu().setGroupCheckable(0, false, true);
         topNavigationView.setOnNavigationItemSelectedListener(onBottomNavigationItemSelectedListener);
+        topNavigationView.getMenu().findItem(R.id.nav_menu_open).setEnabled(true);
         topNavigationView.getMenu().findItem(R.id.nav_menu_open).setChecked(false);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(onBottomNavigationItemSelectedListener);
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener onBottomNavigationItemSelectedListener =
+    private final BottomNavigationView.OnNavigationItemSelectedListener onBottomNavigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -91,12 +92,13 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case R.id.nav_menu_open:
                             drawerLayout.openDrawer(GravityCompat.START);
+                            break;
                     }
                     return true;
                 }
             };
 
-    private NavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener =
+    private final NavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener =
             new NavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {

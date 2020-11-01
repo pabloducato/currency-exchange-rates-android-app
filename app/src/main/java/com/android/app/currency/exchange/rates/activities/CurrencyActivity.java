@@ -19,8 +19,6 @@ import com.android.app.currency.exchange.rates.fragments.InfoFragment;
 import com.android.app.currency.exchange.rates.fragments.ListFragment;
 import com.android.app.currency.exchange.rates.fragments.NotificationsFragment;
 import com.android.app.currency.exchange.rates.fragments.SettingsFragment;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -34,19 +32,21 @@ public class CurrencyActivity extends AppCompatActivity {
     public BottomNavigationView topNavigationView;
     public NavigationView navigationView;
 
-    public RequestQueue requestQueue;
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         List<String> currencyList = getIntent().getStringArrayListExtra("currency");
+        assert currencyList != null;
         String[] arrayCurrencyList = currencyList.toArray(new String[0]);
         setContentView(R.layout.activity_currencies);
         topNavigationView = findViewById(R.id.top_navigation);
         topNavigationView.getMenu().setGroupCheckable(0, false, true);
         topNavigationView.setOnNavigationItemSelectedListener(onBottomNavigationItemSelectedListener);
+        topNavigationView.getMenu().findItem(R.id.nav_menu_open).setEnabled(true);
         topNavigationView.getMenu().findItem(R.id.nav_menu_open).setChecked(false);
+        topNavigationView.getMenu().findItem(R.id.nav_menu_return).setEnabled(true);
+        topNavigationView.getMenu().findItem(R.id.nav_menu_return).setChecked(false);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.getMenu().getItem(1).setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(onBottomNavigationItemSelectedListener);
@@ -56,7 +56,6 @@ public class CurrencyActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.navigation_view);
         navigationView.getMenu().getItem(1).setChecked(true);
         navigationView.setNavigationItemSelectedListener(onNavigationItemSelectedListener);
-        requestQueue = Volley.newRequestQueue(this);
         CurrencyFragment currencyFragment = new CurrencyFragment();
         Bundle bundle = new Bundle();
         bundle.putStringArray("currency", arrayCurrencyList);
@@ -74,7 +73,7 @@ public class CurrencyActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener onBottomNavigationItemSelectedListener =
+    private final BottomNavigationView.OnNavigationItemSelectedListener onBottomNavigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -101,12 +100,16 @@ public class CurrencyActivity extends AppCompatActivity {
                             break;
                         case R.id.nav_menu_open:
                             drawerLayout.openDrawer(GravityCompat.START);
+                            break;
+                        case R.id.nav_menu_return:
+                            CurrencyActivity.super.onBackPressed();
+                            break;
                     }
                     return true;
                 }
             };
 
-    private NavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener =
+    private final NavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener =
             new NavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {

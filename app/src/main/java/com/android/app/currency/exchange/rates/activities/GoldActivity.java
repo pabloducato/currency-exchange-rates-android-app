@@ -1,10 +1,12 @@
 package com.android.app.currency.exchange.rates.activities;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -20,6 +22,8 @@ import com.android.app.currency.exchange.rates.fragments.SettingsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.List;
+
 public class GoldActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
@@ -28,26 +32,35 @@ public class GoldActivity extends AppCompatActivity {
     public BottomNavigationView topNavigationView;
     public NavigationView navigationView;
 
-    private static final String TAG = "GoldActivity";
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        List<String> goldList = getIntent().getStringArrayListExtra("gold");
+        assert goldList != null;
+        String arrayGoldString = goldList.get(0);
         setContentView(R.layout.activity_gold);
         topNavigationView = findViewById(R.id.top_navigation);
         topNavigationView.getMenu().setGroupCheckable(0, false, true);
         topNavigationView.setOnNavigationItemSelectedListener(onBottomNavigationItemSelectedListener);
+        topNavigationView.getMenu().findItem(R.id.nav_menu_open).setEnabled(true);
         topNavigationView.getMenu().findItem(R.id.nav_menu_open).setChecked(false);
+        topNavigationView.getMenu().findItem(R.id.nav_menu_return).setEnabled(true);
+        topNavigationView.getMenu().findItem(R.id.nav_menu_return).setChecked(false);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.getMenu().getItem(1).setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(onBottomNavigationItemSelectedListener);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new GoldFragment()).commit();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
         navigationView.getMenu().getItem(1).setChecked(true);
         navigationView.setNavigationItemSelectedListener(onNavigationItemSelectedListener);
+        GoldFragment goldFragment = new GoldFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("gold", arrayGoldString);
+        goldFragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, goldFragment).commit();
     }
 
     @Override
@@ -87,6 +100,10 @@ public class GoldActivity extends AppCompatActivity {
                             break;
                         case R.id.nav_menu_open:
                             drawerLayout.openDrawer(GravityCompat.START);
+                            break;
+                        case R.id.nav_menu_return:
+                            GoldActivity.super.onBackPressed();
+                            break;
                     }
                     return true;
                 }
