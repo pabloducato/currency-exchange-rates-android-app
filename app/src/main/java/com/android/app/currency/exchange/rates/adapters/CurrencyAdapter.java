@@ -35,6 +35,7 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
         public TextView rateAbbreviation;
         public TextView rateValue;
         public TextView rateDescription;
+        public TextView rateBigValue;
         CurrencyAdapter.OnItemClickListener onItemClickListener;
 
         public CurrencyViewHolder(@NonNull View itemView, CurrencyAdapter.OnItemClickListener onItemClickListener) {
@@ -43,6 +44,7 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
             rateAbbreviation = itemView.findViewById(R.id.currency_rate_abbreviation);
             rateValue = itemView.findViewById(R.id.currency_rate_value);
             rateDescription = itemView.findViewById(R.id.currency_rate_description);
+            rateBigValue = itemView.findViewById(R.id.currency_rate_big_value);
             this.onItemClickListener = onItemClickListener;
             itemView.setOnClickListener(this);
         }
@@ -67,6 +69,7 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
         holder.rateAbbreviation.setText(currentItem.getRateAbbreviation());
         holder.rateValue.setText(currentItem.getRateValue());
         holder.rateDescription.setText(currentItem.getRateDescription());
+        holder.rateBigValue.setText(currentItem.getRateBigValue());
     }
 
     @Override

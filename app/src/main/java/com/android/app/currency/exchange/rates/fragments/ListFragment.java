@@ -13,11 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.android.app.currency.exchange.rates.VolleySingleton;
 import com.android.app.currency.exchange.rates.activities.CryptoActivity;
 import com.android.app.currency.exchange.rates.activities.CurrencyActivity;
-import com.android.app.currency.exchange.rates.activities.GoldActivity;
 import com.android.app.currency.exchange.rates.items.OptionItem;
 import com.android.app.currency.exchange.rates.R;
 import com.android.app.currency.exchange.rates.adapters.OptionAdapter;
@@ -39,12 +38,13 @@ import java.util.Locale;
 import static android.content.ContentValues.TAG;
 
 public class ListFragment extends Fragment implements OptionAdapter.OnItemClickListener {
-    private TextView textView;
+    public static final String API_CURRENCY_RESPONSE = "com.android.app.currency.exchange.rates.fragments.API_CURRENCY_RESPONSE";
     private RequestQueue requestQueue;
     private RecyclerView recyclerView;
     private OptionAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<OptionItem> optionList = new ArrayList<>();
+    private ArrayList<String> currencyList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -53,19 +53,49 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
         optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut", "Waluty", "Opis"));
         optionList.add(new OptionItem(R.drawable.ic_baseline_star_24, "Kursy złota", "Złoto", "Opis"));
         optionList.add(new OptionItem(R.drawable.ic_baseline_monetization_on_24, "Kursy kryptowalut", "Kryptowaluty", "Opis"));
-        recyclerView = (RecyclerView) fragmentView.findViewById(R.id.recycler_view);
+        recyclerView = fragmentView.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         adapter = new OptionAdapter(optionList, this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-//        textView = (TextView) fragmentView.findViewById(R.id.rates_view_result);
-//        requestQueue = Volley.newRequestQueue(getActivity());
-//        jsonParseRates();
         return fragmentView;
     }
 
-    private void jsonParseRates() {
+    @Override
+    public void onItemClick(int position) {
+        Intent intent;
+        String dateString, URL;
+        JsonArrayRequest jsonArrayRequest;
+        switch (position) {
+            case 0:
+                requestQueue = VolleySingleton.getInstance(getContext()).getRequestQueue();
+                dateString = validateDateString();
+                URL = "https://api.nbp.pl/api/exchangerates/tables/A/" + dateString + "/" + "?format=json";
+                jsonArrayRequest = returnJsonCurrencyArrayRequest(URL);
+                requestQueue.add(jsonArrayRequest);
+                break;
+            case 1:
+                requestQueue = VolleySingleton.getInstance(getContext()).getRequestQueue();
+                dateString = validateDateString();
+                URL = "https://api.nbp.pl/api/cenyzlota/" + dateString + "/" + "?format=json";
+                jsonArrayRequest = returnJsonGoldArrayRequest(URL);
+                requestQueue.add(jsonArrayRequest);
+//                Log.d(TAG, "onItemClick: clicked.");
+//                intent = new Intent(getActivity(), GoldActivity.class);
+//                intent.putExtra("some_object", "something_else");
+//                startActivity(intent);
+                break;
+            case 2:
+                Log.d(TAG, "onItemClick: clicked.");
+                intent = new Intent(getActivity(), CryptoActivity.class);
+                intent.putExtra("some_object", "something_else");
+                startActivity(intent);
+                break;
+        }
+    }
+
+    private String validateDateString() {
         Calendar calendar = Calendar.getInstance();
         Date date = new Date();
         String dateString = "";
@@ -81,8 +111,11 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
         } else {
             dateString = dateFormat.format(date);
         }
-        String URL = "https://api.nbp.pl/api/exchangerates/tables/A/" + dateString + "/" + "?format=json";
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, response -> {
+        return dateString;
+    }
+
+    private JsonArrayRequest returnJsonCurrencyArrayRequest(String URL) {
+        return new JsonArrayRequest(Request.Method.GET, URL, null, response -> {
             try {
                 JSONObject ratesList = response.getJSONObject(0);
                 JSONArray rates = ratesList.getJSONArray("rates");
@@ -91,39 +124,41 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
                     String currency = rate.getString("currency");
                     String code = rate.getString("code");
                     double mid = rate.getDouble("mid");
-                    textView.append(currency + " | " + code + " | " + mid + "\n\n");
+                    currencyList.add(i, currency + ";" + code + ";" + mid);
                 }
+                Log.d(TAG, "onItemClick: clicked.");
+                Intent intent;
+                intent = new Intent(getActivity(), CurrencyActivity.class);
+                intent.putExtra("currency", currencyList);
+                startActivity(intent);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-        }, error -> error.printStackTrace());
-
-        requestQueue.add(jsonArrayRequest);
+        }, Throwable::printStackTrace);
     }
 
-    @Override
-    public void onItemClick(int position) {
-        Intent intent;
-        switch (position) {
-            case 0:
+    private JsonArrayRequest returnJsonGoldArrayRequest(String URL) {
+        return new JsonArrayRequest(Request.Method.GET, URL, null, response -> {
+            try {
+                JSONObject ratesList = response.getJSONObject(0);
+                JSONArray rates = ratesList.getJSONArray("rates");
+                for (int i = 0; i < rates.length(); i++) {
+                    JSONObject rate = rates.getJSONObject(i);
+                    String currency = rate.getString("currency");
+                    String code = rate.getString("code");
+                    double mid = rate.getDouble("mid");
+                    currencyList.add(i, currency + ";" + code + ";" + mid);
+                }
                 Log.d(TAG, "onItemClick: clicked.");
+                Intent intent;
                 intent = new Intent(getActivity(), CurrencyActivity.class);
-                intent.putExtra("some_object", "something_else");
+                intent.putExtra("currency", currencyList);
                 startActivity(intent);
-                break;
-            case 1:
-                Log.d(TAG, "onItemClick: clicked.");
-                intent = new Intent(getActivity(), GoldActivity.class);
-                intent.putExtra("some_object", "something_else");
-                startActivity(intent);
-                break;
-            case 2:
-                Log.d(TAG, "onItemClick: clicked.");
-                intent = new Intent(getActivity(), CryptoActivity.class);
-                intent.putExtra("some_object", "something_else");
-                startActivity(intent);
-                break;
-        }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }, Throwable::printStackTrace);
     }
 }

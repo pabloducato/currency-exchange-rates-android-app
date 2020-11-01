@@ -1,10 +1,12 @@
 package com.android.app.currency.exchange.rates.activities;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -17,8 +19,12 @@ import com.android.app.currency.exchange.rates.fragments.InfoFragment;
 import com.android.app.currency.exchange.rates.fragments.ListFragment;
 import com.android.app.currency.exchange.rates.fragments.NotificationsFragment;
 import com.android.app.currency.exchange.rates.fragments.SettingsFragment;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.List;
 
 public class CurrencyActivity extends AppCompatActivity {
 
@@ -28,11 +34,14 @@ public class CurrencyActivity extends AppCompatActivity {
     public BottomNavigationView topNavigationView;
     public NavigationView navigationView;
 
-    private static final String TAG = "CurrenciesActivity";
+    public RequestQueue requestQueue;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        List<String> currencyList = getIntent().getStringArrayListExtra("currency");
+        String[] arrayCurrencyList = currencyList.toArray(new String[0]);
         setContentView(R.layout.activity_currencies);
         topNavigationView = findViewById(R.id.top_navigation);
         topNavigationView.getMenu().setGroupCheckable(0, false, true);
@@ -41,13 +50,18 @@ public class CurrencyActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.getMenu().getItem(1).setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(onBottomNavigationItemSelectedListener);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CurrencyFragment()).commit();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
         navigationView.getMenu().getItem(1).setChecked(true);
         navigationView.setNavigationItemSelectedListener(onNavigationItemSelectedListener);
+        requestQueue = Volley.newRequestQueue(this);
+        CurrencyFragment currencyFragment = new CurrencyFragment();
+        Bundle bundle = new Bundle();
+        bundle.putStringArray("currency", arrayCurrencyList);
+        currencyFragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, currencyFragment).commit();
     }
 
     @Override

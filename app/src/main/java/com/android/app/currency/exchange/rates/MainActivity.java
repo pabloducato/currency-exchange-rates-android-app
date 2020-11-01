@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         boolean firstStart = sharedPreferences.getBoolean("firstStart", true);
         if (firstStart) {
             showStartDialog();
-
         }
         topNavigationView = findViewById(R.id.top_navigation);
         topNavigationView.getMenu().setGroupCheckable(0, false, true);

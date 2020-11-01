@@ -2,7 +2,6 @@ package com.android.app.currency.exchange.rates.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.app.currency.exchange.rates.R;
-import com.android.app.currency.exchange.rates.activities.CurrencyActivity;
 import com.android.app.currency.exchange.rates.adapters.CurrencyAdapter;
 import com.android.app.currency.exchange.rates.items.CurrencyItem;
 
 import java.util.ArrayList;
-
-import static android.content.ContentValues.TAG;
 
 public class CurrencyFragment extends Fragment implements CurrencyAdapter.OnItemClickListener {
 
@@ -32,11 +28,12 @@ public class CurrencyFragment extends Fragment implements CurrencyAdapter.OnItem
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        String[] arrayCurrencyList = getArguments().getStringArray("currency");
+        for (int i = 0; i < arrayCurrencyList.length; i++) {
+            currencyList.add(new CurrencyItem(R.drawable.ic_baseline_euro_24, arrayCurrencyList[i].split(";")[0], arrayCurrencyList[i].split(";")[1], arrayCurrencyList[i].split(";")[2].substring(0,4), arrayCurrencyList[i].split(";")[2].substring(0,4)));
+        }
         View fragmentView = inflater.inflate(R.layout.fragment_currency, container, false);
-        currencyList.add(new CurrencyItem(R.drawable.ic_baseline_euro_24, "Kursy walut", "Waluty", "Opis"));
-        currencyList.add(new CurrencyItem(R.drawable.ic_baseline_star_24, "Kursy złota", "Złoto", "Opis"));
-        currencyList.add(new CurrencyItem(R.drawable.ic_baseline_monetization_on_24, "Kursy kryptowalut", "Kryptowaluty", "Opis"));
-        recyclerView = (RecyclerView) fragmentView.findViewById(R.id.currency_recycler_view);
+        recyclerView = fragmentView.findViewById(R.id.currency_recycler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         adapter = new CurrencyAdapter(currencyList, this);
@@ -50,11 +47,11 @@ public class CurrencyFragment extends Fragment implements CurrencyAdapter.OnItem
         Intent intent;
         switch (position) {
             default:
-                Log.d(TAG, "onItemClick: clicked.");
-                intent = new Intent(getActivity(), CurrencyActivity.class);
-                intent.putExtra("some_object", "something_else");
-                startActivity(intent);
-                break;
+//                Log.d(TAG, "onItemClick: clicked.");
+//                intent = new Intent(getActivity(), CurrencyActivity.class);
+//                intent.putExtra("some_object", "something_else");
+//                startActivity(intent);
+//                break;
         }
     }
 }

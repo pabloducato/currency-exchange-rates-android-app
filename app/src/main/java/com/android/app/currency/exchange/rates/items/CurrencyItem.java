@@ -5,12 +5,14 @@ public class CurrencyItem {
     private String mRateAbbreviation;
     private String mRateValue;
     private String mRateDescription;
+    private String mRateBigValue;
 
-    public CurrencyItem(int imageResource, String rateAbbreviation, String rateValue, String rateDescription) {
+    public CurrencyItem(int imageResource, String rateAbbreviation, String rateValue, String rateDescription, String rateBigValue) {
         mImageResource = imageResource;
         mRateAbbreviation = rateAbbreviation;
         mRateValue = rateValue;
         mRateDescription = rateDescription;
+        mRateBigValue = rateBigValue;
     }
 
     public int getImageResource() {
@@ -27,5 +29,9 @@ public class CurrencyItem {
 
     public String getRateDescription() {
         return mRateDescription;
+    }
+
+    public String getRateBigValue() {
+        return mRateBigValue;
     }
 }

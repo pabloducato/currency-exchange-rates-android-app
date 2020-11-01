@@ -54,7 +54,6 @@
             android:textSize="12sp"
             android:textStyle="bold" />
 
-
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>
