@@ -105,7 +105,8 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
         SimpleDateFormat sdfHour = new SimpleDateFormat("HH:mm", Locale.getDefault());
         String hour = sdfHour.format(calendar.getTime());
         String start = "00:00";
-        String stop = "10:00";
+        String stop = "12:00";
+        boolean b = hour.compareTo(start) >= 0 && hour.compareTo(stop) <= 0;
         if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
             calendar.add(Calendar.DATE, -1);
             date = calendar.getTime();
@@ -114,8 +115,12 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
             calendar.add(Calendar.DATE, -2);
             date = calendar.getTime();
             dateString = dateFormat.format(date);
-        } else if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY && (hour.compareTo(start) >= 0 && hour.compareTo(stop) <= 0)) {
+        } else if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY && (b)) {
             calendar.add(Calendar.DATE, -3);
+            date = calendar.getTime();
+            dateString = dateFormat.format(date);
+        } else if ((calendar.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) && (b)) {
+            calendar.add(Calendar.DATE, -1);
             date = calendar.getTime();
             dateString = dateFormat.format(date);
         } else {
