@@ -22,7 +22,6 @@ public class CryptoAdapter extends RecyclerView.Adapter<CryptoAdapter.CryptoView
     public CryptoAdapter(ArrayList<CryptoItem> items, CryptoAdapter.OnItemClickListener onItemClickListener) {
         this.mCryptoList = items;
         this.mOnItemClickListener = onItemClickListener;
-
     }
 
     public interface OnItemClickListener {

@@ -12,31 +12,31 @@
         android:layout_margin="5dp">
 
         <ImageView
-            android:id="@+id/crypto_image_view"
+            android:id="@+id/global_image_view"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:padding="2dp"
-            app:tint="@color/old_gold"/>
+            app:tint="@color/old_gold" />
 
         <TextView
-            android:id="@+id/crypto_rate_abbreviation"
+            android:id="@+id/global_rate_abbreviation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/crypto_image_view"
-            android:layout_toRightOf="@+id/crypto_image_view"
+            android:layout_toEndOf="@+id/global_image_view"
+            android:layout_toRightOf="@+id/global_image_view"
             android:text="Line 1"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/crypto_rate_value"
+            android:id="@+id/global_rate_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/crypto_rate_abbreviation"
-            android:layout_alignStart="@+id/crypto_rate_abbreviation"
-            android:layout_alignLeft="@+id/crypto_rate_abbreviation"
+            android:layout_below="@+id/global_rate_abbreviation"
+            android:layout_alignStart="@+id/global_rate_abbreviation"
+            android:layout_alignLeft="@+id/global_rate_abbreviation"
             android:layout_alignParentTop="false"
             android:text="999"
             android:textColor="@color/black"
@@ -44,12 +44,12 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/crypto_rate_description"
+            android:id="@+id/global_rate_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/crypto_rate_value"
-            android:layout_alignStart="@+id/crypto_rate_value"
-            android:layout_alignLeft="@+id/crypto_rate_value"
+            android:layout_below="@+id/global_rate_value"
+            android:layout_alignStart="@+id/global_rate_value"
+            android:layout_alignLeft="@+id/global_rate_value"
             android:layout_alignParentTop="false"
             android:text="Line 2"
             android:textSize="12sp"

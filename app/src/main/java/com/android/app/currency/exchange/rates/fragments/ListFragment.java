@@ -18,9 +18,11 @@ import com.android.app.currency.exchange.rates.VolleySingleton;
 import com.android.app.currency.exchange.rates.items.OptionItem;
 import com.android.app.currency.exchange.rates.R;
 import com.android.app.currency.exchange.rates.adapters.OptionAdapter;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,6 +45,8 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
     private ArrayList<OptionItem> optionList = new ArrayList<>();
     private ArrayList<String> currencyList = new ArrayList<>();
     private ArrayList<String> goldList = new ArrayList<>();
+    private ArrayList<String> cryptoList = new ArrayList<>();
+    private ArrayList<String> globalCurrencyList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -51,9 +55,10 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
         if (optionList != null || optionList.size() > 0) {
             optionList.clear();
         }
-        optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut", "Waluty", "Opis"));
+        optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut NBP tabela A w PLN", "Waluty", "Opis"));
         optionList.add(new OptionItem(R.drawable.ic_baseline_star_24, "Kursy złota", "Złoto", "Opis"));
         optionList.add(new OptionItem(R.drawable.ic_baseline_monetization_on_24, "Kursy kryptowalut", "Kryptowaluty", "Opis"));
+        optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut globalnych w USD", "Waluty", "Opis"));
         recyclerView = fragmentView.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -67,6 +72,7 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
     public void onItemClick(int position) {
         String dateString, URL;
         JsonArrayRequest jsonArrayRequest;
+        JsonObjectRequest jsonObjectRequest;
         switch (position) {
             case 0:
                 requestQueue = VolleySingleton.getInstance(getContext()).getRequestQueue();
@@ -83,16 +89,16 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
                 requestQueue.add(jsonArrayRequest);
                 break;
             case 2:
-                CryptoFragment cryptoFragment = new CryptoFragment();
-//                Bundle bundle = new Bundle();
-//                String arrayGoldString = goldList.get(0);
-//                bundle.putString("crypto", arrayGoldString);
-//                cryptoFragment.setArguments(bundle);
-                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_second_container, cryptoFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                requestQueue = VolleySingleton.getInstance(getContext()).getRequestQueue();
+                URL = "https://api.coincap.io/v2/assets/?format=json";
+                jsonObjectRequest = returnJsonCryptoObjectRequest(URL);
+                requestQueue.add(jsonObjectRequest);
+                break;
+            case 3:
+                requestQueue = VolleySingleton.getInstance(getContext()).getRequestQueue();
+                URL = "https://api.coincap.io/v2/rates/?format=json";
+                jsonObjectRequest = returnJsonGlobalCurrencyObjectRequest(URL);
+                requestQueue.add(jsonObjectRequest);
                 break;
         }
     }
@@ -184,5 +190,72 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
                 e.printStackTrace();
             }
         }, Throwable::printStackTrace);
+    }
+
+    private JsonObjectRequest returnJsonCryptoObjectRequest(String URL) {
+        return (JsonObjectRequest) new JsonObjectRequest(Request.Method.GET, URL, null, response -> {
+            try {
+                if (cryptoList != null || cryptoList.size() > 0) {
+                    cryptoList.clear();
+                }
+                JSONArray cryptoCurrencies = response.getJSONArray("data");
+                for (int i = 0; i < cryptoCurrencies.length(); i++) {
+                    JSONObject crypto = cryptoCurrencies.getJSONObject(i);
+                    String name = crypto.getString("name");
+                    String symbol = crypto.getString("symbol");
+                    double priceUsd = crypto.getDouble("priceUsd");
+                    double changePercent24Hr = crypto.getDouble("changePercent24Hr");
+                    cryptoList.add(i, name + ";" + symbol + ";" + priceUsd + ";" + changePercent24Hr);
+                }
+                CryptoFragment cryptoFragment = new CryptoFragment();
+                Bundle bundle = new Bundle();
+                String[] arrayCryptoString = cryptoList.toArray(new String[0]);
+                bundle.putStringArray("crypto", arrayCryptoString);
+                cryptoFragment.setArguments(bundle);
+                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_second_container, cryptoFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, Throwable::printStackTrace).setRetryPolicy(new DefaultRetryPolicy(
+                0,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
+
+    private JsonObjectRequest returnJsonGlobalCurrencyObjectRequest(String URL) {
+        return (JsonObjectRequest) new JsonObjectRequest(Request.Method.GET, URL, null, response -> {
+            try {
+                if (globalCurrencyList != null || globalCurrencyList.size() > 0) {
+                    globalCurrencyList.clear();
+                }
+                JSONArray globalCurrencies = response.getJSONArray("data");
+                for (int i = 0; i < globalCurrencies.length(); i++) {
+                    JSONObject globalCurrency = globalCurrencies.getJSONObject(i);
+                    String id = globalCurrency.getString("id");
+                    String symbol = globalCurrency.getString("symbol");
+                    double rateUsd = globalCurrency.getDouble("rateUsd");
+                    globalCurrencyList.add(i, id + ";" + symbol + ";" + rateUsd);
+                }
+                GlobalFragment globalFragment = new GlobalFragment();
+                Bundle bundle = new Bundle();
+                String[] arrayGlobalString = globalCurrencyList.toArray(new String[0]);
+                bundle.putStringArray("global", arrayGlobalString);
+                globalFragment.setArguments(bundle);
+                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_second_container, globalFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, Throwable::printStackTrace).setRetryPolicy(new DefaultRetryPolicy(
+                0,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 }

@@ -12,34 +12,34 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.app.currency.exchange.rates.R;
-import com.android.app.currency.exchange.rates.adapters.CryptoAdapter;
-import com.android.app.currency.exchange.rates.items.CryptoItem;
+import com.android.app.currency.exchange.rates.adapters.GlobalAdapter;
+import com.android.app.currency.exchange.rates.items.GlobalItem;
 
 import java.util.ArrayList;
 
-public class CryptoFragment extends Fragment implements CryptoAdapter.OnItemClickListener {
+public class GlobalFragment extends Fragment implements GlobalAdapter.OnItemClickListener {
 
     private RecyclerView recyclerView;
-    private CryptoAdapter adapter;
+    private GlobalAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<CryptoItem> cryptoList = new ArrayList<>();
+    private ArrayList<GlobalItem> globalList = new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View fragmentView = inflater.inflate(R.layout.fragment_crypto, container, false);
-        if (cryptoList != null || cryptoList.size() > 0) {
-            cryptoList.clear();
+        View fragmentView = inflater.inflate(R.layout.fragment_global, container, false);
+        if (globalList != null || globalList.size() > 0) {
+            globalList.clear();
         }
         assert getArguments() != null;
-        String[] arrayCryptoList = getArguments().getStringArray("crypto");
-        for (String s : arrayCryptoList) {
-            cryptoList.add(new CryptoItem(R.drawable.ic_baseline_euro_24, s.split(";")[0], s.split(";")[1], s.split(";")[2].substring(0, 4)));
+        String[] arrayGlobalCurrencyList = getArguments().getStringArray("global");
+        for (String s : arrayGlobalCurrencyList) {
+            globalList.add(new GlobalItem(R.drawable.ic_baseline_euro_24, s.split(";")[0], s.split(";")[1], s.split(";")[2].substring(0, 3)));
         }
-        recyclerView = fragmentView.findViewById(R.id.crypto_recycler_view);
+        recyclerView = fragmentView.findViewById(R.id.global_recycler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
-        adapter = new CryptoAdapter(cryptoList, this);
+        adapter = new GlobalAdapter(globalList, this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         return fragmentView;
@@ -57,4 +57,5 @@ public class CryptoFragment extends Fragment implements CryptoAdapter.OnItemClic
 //                break;
 //        }
     }
+
 }
