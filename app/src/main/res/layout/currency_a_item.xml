@@ -12,31 +12,31 @@
         android:layout_margin="5dp">
 
         <ImageView
-            android:id="@+id/currency_image_view"
+            android:id="@+id/currency_a_image_view"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:padding="2dp"
             app:tint="@color/old_gold" />
 
         <TextView
-            android:id="@+id/currency_rate_abbreviation"
+            android:id="@+id/currency_a_rate_abbreviation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/currency_image_view"
-            android:layout_toRightOf="@+id/currency_image_view"
+            android:layout_toEndOf="@+id/currency_a_image_view"
+            android:layout_toRightOf="@+id/currency_a_image_view"
             android:text="Line 1"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/currency_rate_value"
+            android:id="@+id/currency_a_rate_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/currency_rate_abbreviation"
-            android:layout_alignStart="@+id/currency_rate_abbreviation"
-            android:layout_alignLeft="@+id/currency_rate_abbreviation"
+            android:layout_below="@+id/currency_a_rate_abbreviation"
+            android:layout_alignStart="@+id/currency_a_rate_abbreviation"
+            android:layout_alignLeft="@+id/currency_a_rate_abbreviation"
             android:layout_alignParentTop="false"
             android:text="999"
             android:textColor="@color/black"
@@ -44,24 +44,24 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/currency_rate_description"
+            android:id="@+id/currency_a_rate_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/currency_rate_value"
-            android:layout_alignStart="@+id/currency_rate_value"
-            android:layout_alignLeft="@+id/currency_rate_value"
+            android:layout_below="@+id/currency_a_rate_value"
+            android:layout_alignStart="@+id/currency_a_rate_value"
+            android:layout_alignLeft="@+id/currency_a_rate_value"
             android:layout_alignParentTop="false"
             android:text="Line 2"
             android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/currency_rate_big_value"
+            android:id="@+id/currency_a_rate_big_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/currency_rate_description"
-            android:layout_alignLeft="@+id/currency_rate_description"
-            android:layout_alignBottom="@+id/currency_rate_description"
+            android:layout_alignStart="@+id/currency_a_rate_description"
+            android:layout_alignLeft="@+id/currency_a_rate_description"
+            android:layout_alignBottom="@+id/currency_a_rate_description"
             android:layout_marginStart="190dp"
             android:layout_marginLeft="190dp"
             android:layout_marginTop="1dp"

@@ -12,34 +12,34 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.app.currency.exchange.rates.R;
-import com.android.app.currency.exchange.rates.adapters.CryptoAdapter;
-import com.android.app.currency.exchange.rates.items.CryptoItem;
+import com.android.app.currency.exchange.rates.adapters.CurrencyBAdapter;
+import com.android.app.currency.exchange.rates.items.CurrencyBItem;
 
 import java.util.ArrayList;
 
-public class CryptoFragment extends Fragment implements CryptoAdapter.OnItemClickListener {
+public class CurrencyBFragment extends Fragment implements CurrencyBAdapter.OnItemClickListener {
 
     private RecyclerView recyclerView;
-    private CryptoAdapter adapter;
+    private CurrencyBAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<CryptoItem> cryptoList = new ArrayList<>();
+    private ArrayList<CurrencyBItem> currencyList = new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View fragmentView = inflater.inflate(R.layout.fragment_crypto, container, false);
-        if (cryptoList != null || cryptoList.size() > 0) {
-            cryptoList.clear();
+        View fragmentView = inflater.inflate(R.layout.fragment_currency_b, container, false);
+        if (currencyList != null || currencyList.size() > 0) {
+            currencyList.clear();
         }
         assert getArguments() != null;
-        String[] arrayCryptoList = getArguments().getStringArray("crypto");
-        for (String s : arrayCryptoList) {
-            cryptoList.add(new CryptoItem(R.drawable.ic_baseline_euro_24, s.split(";")[0], s.split(";")[1], s.split(";")[3].substring(0, 4), s.split(";")[2].substring(0, 8)));
+        String[] arrayCurrencyList = getArguments().getStringArray("currencyTableB");
+        for (String s : arrayCurrencyList) {
+            currencyList.add(new CurrencyBItem(R.drawable.ic_baseline_euro_24, s.split(";")[0], s.split(";")[1], s.split(";")[2].substring(0, 4), s.split(";")[2].substring(0, 4)));
         }
-        recyclerView = fragmentView.findViewById(R.id.crypto_recycler_view);
+        recyclerView = fragmentView.findViewById(R.id.currency_b_recycler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
-        adapter = new CryptoAdapter(cryptoList, this);
+        adapter = new CurrencyBAdapter(currencyList, this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         return fragmentView;
@@ -51,10 +51,15 @@ public class CryptoFragment extends Fragment implements CryptoAdapter.OnItemClic
 //        switch (position) {
 //            default:
 //                Log.d(TAG, "onItemClick: clicked.");
-//                intent = new Intent(getActivity(), CryptoActivity.class);
+//                intent = new Intent(getActivity(), CurrencyActivity.class);
 //                intent.putExtra("some_object", "something_else");
 //                startActivity(intent);
 //                break;
 //        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 }

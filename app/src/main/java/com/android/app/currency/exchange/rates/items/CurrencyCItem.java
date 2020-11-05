@@ -1,13 +1,13 @@
 package com.android.app.currency.exchange.rates.items;
 
-public class CurrencyItem {
+public class CurrencyCItem {
     private int mImageResource;
     private String mRateAbbreviation;
     private String mRateValue;
     private String mRateDescription;
     private String mRateBigValue;
 
-    public CurrencyItem(int imageResource, String rateAbbreviation, String rateValue, String rateDescription, String rateBigValue) {
+    public CurrencyCItem(int imageResource, String rateAbbreviation, String rateValue, String rateDescription, String rateBigValue) {
         mImageResource = imageResource;
         mRateAbbreviation = rateAbbreviation;
         mRateValue = rateValue;

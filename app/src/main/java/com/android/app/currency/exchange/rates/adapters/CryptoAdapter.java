@@ -34,6 +34,7 @@ public class CryptoAdapter extends RecyclerView.Adapter<CryptoAdapter.CryptoView
         public TextView rateAbbreviation;
         public TextView rateValue;
         public TextView rateDescription;
+        public TextView ratePercentage;
         CryptoAdapter.OnItemClickListener onItemClickListener;
 
         public CryptoViewHolder(@NonNull View itemView, CryptoAdapter.OnItemClickListener onItemClickListener) {
@@ -42,6 +43,7 @@ public class CryptoAdapter extends RecyclerView.Adapter<CryptoAdapter.CryptoView
             rateAbbreviation = itemView.findViewById(R.id.crypto_rate_abbreviation);
             rateValue = itemView.findViewById(R.id.crypto_rate_value);
             rateDescription = itemView.findViewById(R.id.crypto_rate_description);
+            ratePercentage = itemView.findViewById(R.id.crypto_rate_percentage);
             this.onItemClickListener = onItemClickListener;
             itemView.setOnClickListener(this);
         }
@@ -66,6 +68,7 @@ public class CryptoAdapter extends RecyclerView.Adapter<CryptoAdapter.CryptoView
         holder.rateAbbreviation.setText(currentItem.getRateAbbreviation());
         holder.rateValue.setText(currentItem.getRateValue());
         holder.rateDescription.setText(currentItem.getRateDescription());
+        holder.ratePercentage.setText(currentItem.getRatePercentage());
     }
 
     @Override

@@ -1,18 +1,18 @@
 package com.android.app.currency.exchange.rates.items;
 
-public class CryptoItem {
+public class CurrencyBItem {
     private int mImageResource;
     private String mRateAbbreviation;
     private String mRateValue;
     private String mRateDescription;
-    private String mRatePercentage;
+    private String mRateBigValue;
 
-    public CryptoItem(int imageResource, String rateAbbreviation, String rateValue, String rateDescription, String ratePercentage) {
+    public CurrencyBItem(int imageResource, String rateAbbreviation, String rateValue, String rateDescription, String rateBigValue) {
         mImageResource = imageResource;
         mRateAbbreviation = rateAbbreviation;
         mRateValue = rateValue;
         mRateDescription = rateDescription;
-        mRatePercentage = ratePercentage;
+        mRateBigValue = rateBigValue;
     }
 
     public int getImageResource() {
@@ -31,8 +31,7 @@ public class CryptoItem {
         return mRateDescription;
     }
 
-    public String getRatePercentage() {
-        return mRatePercentage;
+    public String getRateBigValue() {
+        return mRateBigValue;
     }
-
 }
