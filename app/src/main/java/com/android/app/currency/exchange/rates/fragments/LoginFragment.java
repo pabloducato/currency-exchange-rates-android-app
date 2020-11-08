@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginFragment extends Fragment {
 
@@ -93,10 +94,10 @@ public class LoginFragment extends Fragment {
         }
 
         loginProgressBar.setVisibility(View.VISIBLE);
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                if (firebaseUser.isEmailVerified()) {
                     startActivity(new Intent(getContext(), MainActivity.class));
                     Toast.makeText(getContext(), "Logowanie powiodło się!", Toast.LENGTH_LONG).show();
 //                    LoginFragment loginFragment = (LoginFragment) getFragmentManager().findFragmentByTag("LOGIN_FRAGMENT");
@@ -105,12 +106,14 @@ public class LoginFragment extends Fragment {
 //                        getFragmentManager().beginTransaction().remove(loginFragment).commit();
 //                        assert registerFragment != null;
 //                        getFragmentManager().beginTransaction().remove(registerFragment).commit();
-//                    }
                 } else {
-                    Toast.makeText(getContext(), "Logowanie nie powiodło się! Sprawdź poprawność danych!", Toast.LENGTH_LONG).show();
+                    firebaseUser.sendEmailVerification();
+                    Toast.makeText(getContext(), "Sprawdź swojego maila, aby zweryfikować utworzone konto!", Toast.LENGTH_LONG).show();
                 }
-                loginProgressBar.setVisibility(View.GONE);
+            } else {
+                Toast.makeText(getContext(), "Logowanie nie powiodło się! Sprawdź poprawność danych!", Toast.LENGTH_LONG).show();
             }
+            loginProgressBar.setVisibility(View.GONE);
         });
 
     }
