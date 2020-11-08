@@ -100,6 +100,8 @@ public class LoginFragment extends Fragment {
                 if (firebaseUser.isEmailVerified()) {
                     startActivity(new Intent(getContext(), MainActivity.class));
                     Toast.makeText(getContext(), "Logowanie powiodło się!", Toast.LENGTH_LONG).show();
+                    editTextEmail.setText("");
+                    editTextPassword.setText("");
 //                    LoginFragment loginFragment = (LoginFragment) getFragmentManager().findFragmentByTag("LOGIN_FRAGMENT");
 //                    RegisterFragment registerFragment = (RegisterFragment) getFragmentManager().findFragmentByTag("REGISTER_FRAGMENT");
 //                    if (loginFragment != null && loginFragment.isVisible()) {

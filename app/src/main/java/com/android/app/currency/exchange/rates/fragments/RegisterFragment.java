@@ -124,6 +124,11 @@ public class RegisterFragment extends Fragment {
                     FirebaseDatabase.getInstance().getReference("Users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).setValue(user).addOnCompleteListener(task1 -> {
                         if (task1.isSuccessful()) {
                             Toast.makeText(getContext(), "Rejestracja przebiegła pomyślnie", Toast.LENGTH_LONG).show();
+                            editTextFirstName.setText("");
+                            editTextLastName.setText("");
+                            editTextEmail.setText("");
+                            editTextPassword.setText("");
+                            editTextConfirmPassword.setText("");
                         } else {
                             Toast.makeText(getContext(), "Rejestracja nieudana! Spróbuj ponownie!", Toast.LENGTH_LONG).show();
                         }
