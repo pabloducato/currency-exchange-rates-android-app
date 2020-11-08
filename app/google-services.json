@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "364488906129",
+    "firebase_url": "https://currency-exchange-rates-d646f.firebaseio.com",
+    "project_id": "currency-exchange-rates-d646f",
+    "storage_bucket": "currency-exchange-rates-d646f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:364488906129:android:b17d3e5f30010394d2f630",
+        "android_client_info": {
+          "package_name": "com.android.app.currency.exchange.rates"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "364488906129-o1r1621s9mm5nodl6c9ghr4fe934qev5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZHvX_As0ZlpkL7MeBlddb8cJJMG-V4SQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "364488906129-o1r1621s9mm5nodl6c9ghr4fe934qev5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
