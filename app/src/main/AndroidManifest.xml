@@ -22,7 +22,10 @@
             android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".EmptyActivity"
+            android:name=".LoginAfterRegistrationActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".ResetPasswordActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 

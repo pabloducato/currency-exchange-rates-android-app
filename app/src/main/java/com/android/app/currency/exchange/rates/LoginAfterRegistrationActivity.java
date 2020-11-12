@@ -7,12 +7,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.app.currency.exchange.rates.fragments.LoginFragment;
 
-public class EmptyActivity extends AppCompatActivity {
+public class LoginAfterRegistrationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_empty);
+        setContentView(R.layout.activity_login_after_registration);
         getSupportFragmentManager().beginTransaction().replace(R.id.empty_container, new LoginFragment()).commit();
     }
 

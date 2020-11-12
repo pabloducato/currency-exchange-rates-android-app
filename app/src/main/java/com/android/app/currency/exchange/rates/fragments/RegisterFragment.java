@@ -17,7 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.android.app.currency.exchange.rates.EmptyActivity;
+import com.android.app.currency.exchange.rates.LoginAfterRegistrationActivity;
 import com.android.app.currency.exchange.rates.R;
 import com.android.app.currency.exchange.rates.models.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -139,7 +139,7 @@ public class RegisterFragment extends Fragment {
                     registerProgressBar.setVisibility(View.GONE);
                 }
             });
-            Intent intent = new Intent(getActivity(), EmptyActivity.class);
+            Intent intent = new Intent(getActivity(), LoginAfterRegistrationActivity.class);
             startActivity(intent);
         }
     }

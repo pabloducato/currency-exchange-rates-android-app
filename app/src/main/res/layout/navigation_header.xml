@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linear_layout"
     android:layout_width="match_parent"
-    android:layout_height="176dp"
+    android:layout_height="270dp"
     android:background="@color/purple_500"
     android:gravity="bottom"
     android:orientation="vertical"
@@ -9,19 +11,60 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
+        android:id="@+id/header_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_launcher_round" />
 
     <TextView
+        android:id="@+id/email_address_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
-        android:text="Paweł Kocan"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:text="Adres E-Mail:"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/email_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="pkocan@onet.pl" />
+        android:paddingTop="8dp"
+        android:textColor="@color/white"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/full_name_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="Imię i Nazwisko:"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/full_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:textColor="@color/white"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/text_view_logout"
+        android:layout_width="230sp"
+        android:layout_height="50sp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/background_white_round_button"
+        android:gravity="center"
+        android:paddingStart="40dp"
+        android:paddingLeft="40dp"
+        android:paddingEnd="40dp"
+        android:paddingRight="40dp"
+        android:text="WYLOGUJ SIĘ"
+        android:textColor="@android:color/black"
+        android:textSize="15sp"
+        app:drawableLeftCompat="@drawable/ic_baseline_exit_to_app_24" />
+
+
 </LinearLayout>

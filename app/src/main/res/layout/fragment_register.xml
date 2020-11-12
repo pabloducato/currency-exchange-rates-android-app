@@ -143,6 +143,6 @@
         android:text="ZAREJESTRUJ SIĘ"
         android:textColor="@android:color/black"
         android:textSize="15sp"
-        app:drawableLeftCompat="@drawable/ic_baseline_check_24" />
+        app:drawableLeftCompat="@drawable/ic_baseline_person_add_24" />
 
 </RelativeLayout>

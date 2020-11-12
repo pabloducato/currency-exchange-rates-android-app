@@ -16,13 +16,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.android.app.currency.exchange.rates.AuthorizationActivity;
 import com.android.app.currency.exchange.rates.MainActivity;
 import com.android.app.currency.exchange.rates.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import com.android.app.currency.exchange.rates.ResetPasswordActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -31,6 +29,8 @@ public class LoginFragment extends Fragment {
     protected FirebaseAuth mAuth;
     protected EditText editTextEmail, editTextPassword;
     protected ProgressBar loginProgressBar;
+    Fragment fragment;
+    FragmentTransaction fragmentTransaction;
 
     @Nullable
     @Override
@@ -53,7 +53,7 @@ public class LoginFragment extends Fragment {
             }
         });
         forgotPassword.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), MainActivity.class);
+            Intent intent = new Intent(getActivity(), ResetPasswordActivity.class);
             startActivity(intent);
         });
         serviceTextView.setOnClickListener(v -> {
