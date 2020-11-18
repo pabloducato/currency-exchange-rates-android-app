@@ -16,7 +16,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.android.app.currency.exchange.rates.MainActivity;
 import com.android.app.currency.exchange.rates.R;
@@ -29,8 +28,6 @@ public class LoginFragment extends Fragment {
     protected FirebaseAuth mAuth;
     protected EditText editTextEmail, editTextPassword;
     protected ProgressBar loginProgressBar;
-    Fragment fragment;
-    FragmentTransaction fragmentTransaction;
 
     @Nullable
     @Override
@@ -98,16 +95,12 @@ public class LoginFragment extends Fragment {
             if (task.isSuccessful()) {
                 FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                 if (firebaseUser.isEmailVerified()) {
-                    startActivity(new Intent(getContext(), MainActivity.class));
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                     Toast.makeText(getContext(), "Logowanie powiodło się!", Toast.LENGTH_LONG).show();
                     editTextEmail.setText("");
                     editTextPassword.setText("");
-//                    LoginFragment loginFragment = (LoginFragment) getFragmentManager().findFragmentByTag("LOGIN_FRAGMENT");
-//                    RegisterFragment registerFragment = (RegisterFragment) getFragmentManager().findFragmentByTag("REGISTER_FRAGMENT");
-//                    if (loginFragment != null && loginFragment.isVisible()) {
-//                        getFragmentManager().beginTransaction().remove(loginFragment).commit();
-//                        assert registerFragment != null;
-//                        getFragmentManager().beginTransaction().remove(registerFragment).commit();
                 } else {
                     firebaseUser.sendEmailVerification();
                     Toast.makeText(getContext(), "Sprawdź swojego maila, aby zweryfikować utworzone konto!", Toast.LENGTH_LONG).show();
