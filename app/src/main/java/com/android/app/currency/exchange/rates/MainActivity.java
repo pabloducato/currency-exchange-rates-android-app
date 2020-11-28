@@ -92,6 +92,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void returnFrom() {
+        super.onBackPressed();
+    }
+
     private final BottomNavigationView.OnNavigationItemSelectedListener onBottomNavigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -150,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                             drawerLayout.openDrawer(GravityCompat.START);
                             break;
                         case R.id.nav_menu_return:
-                            onBackPressed();
+                            returnFrom();
                             break;
                     }
                     return true;
