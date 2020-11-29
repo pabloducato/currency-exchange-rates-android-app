@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     public BottomNavigationView topNavigationView;
     public NavigationView navigationView;
     public LinearLayout linearLayout;
-    private FirebaseUser firebaseUser;
     private DatabaseReference databaseReference;
     private String userId;
 
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
         userId = firebaseUser.getUid();
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferences", MODE_PRIVATE);
@@ -98,30 +97,18 @@ public class MainActivity extends AppCompatActivity {
 
     private final BottomNavigationView.OnNavigationItemSelectedListener onBottomNavigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
+                final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     linearLayout = findViewById(R.id.linear_layout);
                     TextView logout = linearLayout.findViewById(R.id.text_view_logout);
+                    TextView deleteAccount = linearLayout.findViewById(R.id.text_view_delete_account);
                     TextView emailTextView = linearLayout.findViewById(R.id.email_address);
                     TextView fullNameTextView = linearLayout.findViewById(R.id.full_name);
-                    databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            User user = snapshot.getValue(User.class);
-                            if (user != null) {
-                                String email = user.email;
-                                String fullName = user.firstName + " " + user.lastName;
-                                emailTextView.setText(email);
-                                fullNameTextView.setText(fullName);
-                            }
-                        }
+                    loadUserInformation(emailTextView, fullNameTextView, firebaseUser);
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            Toast.makeText(getApplicationContext(), "Coś poszło nie tak!", Toast.LENGTH_LONG).show();
-
-                        }
-                    });
                     logout.setOnClickListener(v -> {
                         FirebaseAuth.getInstance().signOut();
                         Intent intent = new Intent(getApplicationContext(), AuthorizationActivity.class);
@@ -129,6 +116,28 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     });
+
+                    deleteAccount.setOnClickListener(v -> {
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                        dialog.setTitle("Czy na pewno chcesz usunąć swoje konto?");
+                        dialog.setMessage("Ta operacja spowoduje nieodwracalne usunięcie Twojego konta z systemu!");
+
+                        dialog.setPositiveButton("Usuń", (dialog1, which) -> firebaseUser.delete().addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(MainActivity.this, "Twoje konto zostało usunięte.", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(MainActivity.this, AuthorizationActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                Toast.makeText(MainActivity.this, "Operacja usunięcia Twojego konta nie powiodła się!", Toast.LENGTH_LONG).show();
+                            }
+                        }));
+                        dialog.setNegativeButton("Anuluj", (dialog12, which) -> dialog12.dismiss());
+                        AlertDialog alertDialog = dialog.create();
+                        alertDialog.show();
+                    });
+
                     switch (item.getItemId()) {
                         case R.id.nav_home:
                             navigationView.setCheckedItem(R.id.drawer_navigation_home);
@@ -191,6 +200,29 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             };
+
+    private void loadUserInformation(TextView emailTextView, TextView fullNameTextView, FirebaseUser firebaseUser) {
+        databaseReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (firebaseUser != null) {
+                    User user = snapshot.getValue(User.class);
+                    if (user != null) {
+                        String email = firebaseUser.getEmail();
+                        String fullName = user.firstName + " " + user.lastName;
+                        emailTextView.setText(email);
+                        fullNameTextView.setText(fullName);
+                        fullNameTextView.setText(fullName);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getApplicationContext(), "Coś poszło nie tak!", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
     private void showStartDialog() {
         new AlertDialog.Builder(this)

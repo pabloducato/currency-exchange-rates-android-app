@@ -7,23 +7,23 @@
         <item
             android:id="@+id/drawer_navigation_home"
             android:icon="@drawable/ic_baseline_home_24"
-            android:title="Home" />
+            android:title="Dom" />
         <item
             android:id="@+id/drawer_navigation_list"
             android:icon="@drawable/ic_baseline_format_list_bulleted_24"
-            android:title="List" />
+            android:title="Waluty" />
         <item
             android:id="@+id/drawer_navigation_settings"
             android:icon="@drawable/ic_baseline_settings_24"
-            android:title="Settings" />
+            android:title="Ustawienia" />
         <item
             android:id="@+id/drawer_navigation_info"
             android:icon="@drawable/ic_baseline_info_24"
-            android:title="Info" />
+            android:title="Informacje" />
         <item
             android:id="@+id/drawer_navigation_notifications"
             android:icon="@drawable/ic_baseline_notifications_none_24"
-            android:title="Notifications" />
+            android:title="Wiadomości" />
     </group>
 
 </menu>

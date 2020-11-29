@@ -34,9 +34,9 @@ public class LoginFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_login, container, false);
         mAuth = FirebaseAuth.getInstance();
-        editTextEmail = (EditText) fragmentView.findViewById(R.id.login_email);
-        editTextPassword = (EditText) fragmentView.findViewById(R.id.login_password);
-        loginProgressBar = (ProgressBar) fragmentView.findViewById(R.id.loginProgressBar);
+        editTextEmail = fragmentView.findViewById(R.id.login_email);
+        editTextPassword = fragmentView.findViewById(R.id.login_password);
+        loginProgressBar = fragmentView.findViewById(R.id.loginProgressBar);
         TextView serviceTextView = fragmentView.findViewById(R.id.text_view_login_2);
         serviceTextView.setPaintFlags(serviceTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         TextView login = fragmentView.findViewById(R.id.text_view_login_1);
@@ -54,7 +54,7 @@ public class LoginFragment extends Fragment {
             startActivity(intent);
         });
         serviceTextView.setOnClickListener(v -> {
-            String url = "https://www.google.com";
+            String url = "https://www.linkedin.com/in/paweł-k-597919142";
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(url));
             startActivity(intent);
@@ -101,6 +101,7 @@ public class LoginFragment extends Fragment {
                     Toast.makeText(getContext(), "Logowanie powiodło się!", Toast.LENGTH_LONG).show();
                     editTextEmail.setText("");
                     editTextPassword.setText("");
+                    getActivity().finish();
                 } else {
                     firebaseUser.sendEmailVerification();
                     Toast.makeText(getContext(), "Sprawdź swojego maila, aby zweryfikować utworzone konto!", Toast.LENGTH_LONG).show();

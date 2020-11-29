@@ -59,7 +59,7 @@ public class RegisterFragment extends Fragment {
         });
         serviceTextView.setPaintFlags(serviceTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         serviceTextView.setOnClickListener(v -> {
-            String url = "https://www.google.com";
+            String url = "https://www.linkedin.com/in/paweł-k-597919142";
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(url));
             startActivity(intent);
@@ -123,12 +123,15 @@ public class RegisterFragment extends Fragment {
                     User user = new User(firstName, lastName, email);
                     FirebaseDatabase.getInstance().getReference("Users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).setValue(user).addOnCompleteListener(task1 -> {
                         if (task1.isSuccessful()) {
+                            Intent intent = new Intent(getActivity(), LoginAfterRegistrationActivity.class);
+                            startActivity(intent);
                             Toast.makeText(getContext(), "Rejestracja przebiegła pomyślnie", Toast.LENGTH_LONG).show();
                             editTextFirstName.setText("");
                             editTextLastName.setText("");
                             editTextEmail.setText("");
                             editTextPassword.setText("");
                             editTextConfirmPassword.setText("");
+                            getActivity().finish();
                         } else {
                             Toast.makeText(getContext(), "Rejestracja nieudana! Spróbuj ponownie!", Toast.LENGTH_LONG).show();
                         }
@@ -139,8 +142,6 @@ public class RegisterFragment extends Fragment {
                     registerProgressBar.setVisibility(View.GONE);
                 }
             });
-            Intent intent = new Intent(getActivity(), LoginAfterRegistrationActivity.class);
-            startActivity(intent);
         }
     }
 }
