@@ -31,6 +31,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,7 +40,6 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
-
     public BottomNavigationView bottomNavigationView;
     public BottomNavigationView topNavigationView;
     public NavigationView navigationView;
@@ -110,32 +110,28 @@ public class MainActivity extends AppCompatActivity {
                     loadUserInformation(emailTextView, fullNameTextView, firebaseUser);
 
                     logout.setOnClickListener(v -> {
-                        FirebaseAuth.getInstance().signOut();
-                        Intent intent = new Intent(getApplicationContext(), AuthorizationActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                        finish();
+                        try {
+                            logout.setPressed(true);
+                            Handler handler = new Handler();
+                            handler.postDelayed(() -> logoutUser(), 100);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     });
 
                     deleteAccount.setOnClickListener(v -> {
-                        AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
-                        dialog.setTitle("Czy na pewno chcesz usunąć swoje konto?");
-                        dialog.setMessage("Ta operacja spowoduje nieodwracalne usunięcie Twojego konta z systemu!");
-
-                        dialog.setPositiveButton("Usuń", (dialog1, which) -> firebaseUser.delete().addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(MainActivity.this, "Twoje konto zostało usunięte.", Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(MainActivity.this, AuthorizationActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                                finish();
-                            } else {
-                                Toast.makeText(MainActivity.this, "Operacja usunięcia Twojego konta nie powiodła się!", Toast.LENGTH_LONG).show();
-                            }
-                        }));
-                        dialog.setNegativeButton("Anuluj", (dialog12, which) -> dialog12.dismiss());
-                        AlertDialog alertDialog = dialog.create();
-                        alertDialog.show();
+                        try {
+                            deleteAccount.setPressed(true);
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    deleteUserAccount(firebaseUser);
+                                }
+                            }, 100);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     });
 
                     switch (item.getItemId()) {
@@ -222,6 +218,34 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Coś poszło nie tak!", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void logoutUser() {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(getApplicationContext(), AuthorizationActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
+
+    private void deleteUserAccount(FirebaseUser firebaseUser) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+        dialog.setTitle("Czy na pewno chcesz usunąć swoje konto?");
+        dialog.setMessage("Ta operacja spowoduje nieodwracalne usunięcie Twojego konta z systemu!");
+        dialog.setPositiveButton("Usuń", (dialog1, which) -> firebaseUser.delete().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(MainActivity.this, "Twoje konto zostało usunięte.", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(MainActivity.this, AuthorizationActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+            } else {
+                Toast.makeText(MainActivity.this, "Operacja usunięcia Twojego konta nie powiodła się!", Toast.LENGTH_LONG).show();
+            }
+        }));
+        dialog.setNegativeButton("Anuluj", (dialog12, which) -> dialog12.dismiss());
+        AlertDialog alertDialog = dialog.create();
+        alertDialog.show();
     }
 
     private void showStartDialog() {

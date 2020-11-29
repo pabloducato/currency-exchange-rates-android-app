@@ -44,6 +44,7 @@ public class LoginFragment extends Fragment {
         forgotPassword.setPaintFlags(forgotPassword.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         login.setOnClickListener(v -> {
             try {
+                login.setPressed(true);
                 loginUser();
             } catch (Exception e) {
                 e.printStackTrace();

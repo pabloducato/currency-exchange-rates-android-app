@@ -38,12 +38,12 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_register, container, false);
         mAuth = FirebaseAuth.getInstance();
-        editTextFirstName = (EditText) fragmentView.findViewById(R.id.register_first_name);
-        editTextLastName = (EditText) fragmentView.findViewById(R.id.register_last_name);
-        editTextEmail = (EditText) fragmentView.findViewById(R.id.register_email);
-        editTextPassword = (EditText) fragmentView.findViewById(R.id.register_password);
-        editTextConfirmPassword = (EditText) fragmentView.findViewById(R.id.register_confirm_password);
-        registerProgressBar = (ProgressBar) fragmentView.findViewById(R.id.registerProgressBar);
+        editTextFirstName = fragmentView.findViewById(R.id.register_first_name);
+        editTextLastName = fragmentView.findViewById(R.id.register_last_name);
+        editTextEmail = fragmentView.findViewById(R.id.register_email);
+        editTextPassword = fragmentView.findViewById(R.id.register_password);
+        editTextConfirmPassword = fragmentView.findViewById(R.id.register_confirm_password);
+        registerProgressBar = fragmentView.findViewById(R.id.registerProgressBar);
         TextView serviceTextView = fragmentView.findViewById(R.id.text_view_register_2);
         TextView register = fragmentView.findViewById(R.id.text_view_register_1);
         serviceTextView.setPaintFlags(serviceTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -52,6 +52,7 @@ public class RegisterFragment extends Fragment {
         fragment_register = authorizationFragmentView.findViewById(R.id.fragment_register);
         register.setOnClickListener(v -> {
             try {
+                register.setPressed(true);
                 registerUser();
             } catch (Exception e) {
                 e.printStackTrace();

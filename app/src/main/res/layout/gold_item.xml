@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    app:cardCornerRadius="20dp">
+    app:cardCornerRadius="80dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:padding="2dp"
-            app:tint="@color/old_gold"/>
+            app:tint="@color/old_gold" />
 
         <TextView
             android:id="@+id/gold_rate_abbreviation"

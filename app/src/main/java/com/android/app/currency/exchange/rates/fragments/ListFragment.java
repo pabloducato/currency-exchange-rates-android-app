@@ -38,17 +38,13 @@ import java.util.Objects;
 
 public class ListFragment extends Fragment implements OptionAdapter.OnItemClickListener {
 
-    private RequestQueue requestQueue;
-    private RecyclerView recyclerView;
-    private OptionAdapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<OptionItem> optionList = new ArrayList<>();
-    private ArrayList<String> currencyAList = new ArrayList<>();
-    private ArrayList<String> currencyBList = new ArrayList<>();
-    private ArrayList<String> currencyCList = new ArrayList<>();
-    private ArrayList<String> goldList = new ArrayList<>();
-    private ArrayList<String> cryptoList = new ArrayList<>();
-    private ArrayList<String> globalCurrencyList = new ArrayList<>();
+    private final ArrayList<OptionItem> optionList = new ArrayList<>();
+    private final ArrayList<String> currencyAList = new ArrayList<>();
+    private final ArrayList<String> currencyBList = new ArrayList<>();
+    private final ArrayList<String> currencyCList = new ArrayList<>();
+    private final ArrayList<String> goldList = new ArrayList<>();
+    private final ArrayList<String> cryptoList = new ArrayList<>();
+    private final ArrayList<String> globalCurrencyList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -63,10 +59,10 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
         optionList.add(new OptionItem(R.drawable.ic_baseline_star_24, "Kursy złota", "Złoto", "Opis"));
         optionList.add(new OptionItem(R.drawable.ic_baseline_monetization_on_24, "Kursy kryptowalut", "Kryptowaluty", "Opis"));
         optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut globalnych w USD", "Waluty", "Opis"));
-        recyclerView = fragmentView.findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = fragmentView.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getActivity());
-        adapter = new OptionAdapter(optionList, this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        OptionAdapter adapter = new OptionAdapter(optionList, this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         return fragmentView;
@@ -79,7 +75,7 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
         JsonObjectRequest jsonObjectRequest;
         switch (position) {
             case 0:
-                requestQueue = VolleySingleton.getInstance(getContext()).getRequestQueue();
+                RequestQueue requestQueue = VolleySingleton.getInstance(getContext()).getRequestQueue();
                 dateString = validateDateString();
                 URL = "https://api.nbp.pl/api/exchangerates/tables/A/" + dateString + "/" + "?format=json";
                 jsonArrayRequest = returnJsonCurrencyTableAArrayRequest(URL);
@@ -123,8 +119,8 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
 
     private String validateDateTableBString() {
         Calendar calendar = Calendar.getInstance();
-        Date date = new Date();
-        String dateString = "";
+        Date date;
+        String dateString;
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         SimpleDateFormat sdfHour = new SimpleDateFormat("HH:mm", Locale.getDefault());
         String hour = sdfHour.format(calendar.getTime());
@@ -158,7 +154,7 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
     private String validateDateString() {
         Calendar calendar = Calendar.getInstance();
         Date date = new Date();
-        String dateString = "";
+        String dateString;
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         SimpleDateFormat sdfHour = new SimpleDateFormat("HH:mm", Locale.getDefault());
         String hour = sdfHour.format(calendar.getTime());

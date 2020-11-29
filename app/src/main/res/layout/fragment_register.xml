@@ -134,7 +134,7 @@
         android:layout_below="@id/main_linear_layout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        android:background="@drawable/background_white_round_button"
+        android:background="@drawable/button_background_backend"
         android:gravity="center"
         android:paddingStart="40dp"
         android:paddingLeft="40dp"
