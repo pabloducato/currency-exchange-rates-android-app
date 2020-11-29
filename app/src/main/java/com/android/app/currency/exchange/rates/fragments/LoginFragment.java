@@ -53,6 +53,7 @@ public class LoginFragment extends Fragment {
         forgotPassword.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), ResetPasswordActivity.class);
             startActivity(intent);
+            getActivity().finish();
         });
         serviceTextView.setOnClickListener(v -> {
             String url = "https://www.linkedin.com/in/paweł-k-597919142";

@@ -17,8 +17,6 @@ import androidx.fragment.app.Fragment;
 
 import com.android.app.currency.exchange.rates.LoginAfterRegistrationActivity;
 import com.android.app.currency.exchange.rates.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ResetPasswordFragment extends Fragment {
@@ -35,9 +33,7 @@ public class ResetPasswordFragment extends Fragment {
         editTextEmail = fragmentView.findViewById(R.id.reset_password_email);
         resetPasswordProgressBar = fragmentView.findViewById(R.id.resetPasswordProgressBar);
         auth = FirebaseAuth.getInstance();
-        resetPassword.setOnClickListener(v -> {
-            resetPassword();
-        });
+        resetPassword.setOnClickListener(v -> resetPassword());
         return fragmentView;
     }
 
@@ -52,19 +48,19 @@ public class ResetPasswordFragment extends Fragment {
             editTextEmail.requestFocus();
         } else {
             resetPasswordProgressBar.setVisibility(View.VISIBLE);
-            auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(getContext(), "Sprawdź swój adres E-Mail, aby zresetować swoje hasło!", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(getContext(), "Spróbuj ponownie! Coś poszło nie tak!", Toast.LENGTH_LONG).show();
-                    }
-                    resetPasswordProgressBar.setVisibility(View.GONE);
+            auth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(getContext(), "Sprawdź swój adres E-Mail, aby zresetować swoje hasło!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getActivity(), LoginAfterRegistrationActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    editTextEmail.setText("");
+                    getActivity().finish();
+                } else {
+                    Toast.makeText(getContext(), "Spróbuj ponownie! Coś poszło nie tak!", Toast.LENGTH_LONG).show();
                 }
+                resetPasswordProgressBar.setVisibility(View.GONE);
             });
-            Intent intent = new Intent(getActivity(), LoginAfterRegistrationActivity.class);
-            startActivity(intent);
         }
     }
 }
