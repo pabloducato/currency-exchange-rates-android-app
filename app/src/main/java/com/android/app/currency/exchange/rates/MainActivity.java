@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import com.android.app.currency.exchange.rates.fragments.HomeFragment;
 import com.android.app.currency.exchange.rates.fragments.InfoFragment;
 import com.android.app.currency.exchange.rates.fragments.ListFragment;
-import com.android.app.currency.exchange.rates.fragments.NotificationsFragment;
+import com.android.app.currency.exchange.rates.fragments.MessagesFragment;
 import com.android.app.currency.exchange.rates.fragments.SettingsFragment;
 import com.android.app.currency.exchange.rates.models.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -147,13 +147,13 @@ public class MainActivity extends AppCompatActivity {
                             navigationView.setCheckedItem(R.id.drawer_navigation_settings);
                             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new SettingsFragment()).commit();
                             break;
-                        case R.id.nav_notifications:
-                            navigationView.setCheckedItem(R.id.drawer_navigation_notifications);
-                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new NotificationsFragment()).commit();
-                            break;
                         case R.id.nav_info:
                             navigationView.setCheckedItem(R.id.drawer_navigation_info);
                             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new InfoFragment()).commit();
+                            break;
+                        case R.id.nav_notifications:
+                            navigationView.setCheckedItem(R.id.drawer_navigation_notifications);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new MessagesFragment()).commit();
                             break;
                         case R.id.nav_menu_open:
                             drawerLayout.openDrawer(GravityCompat.START);
@@ -183,13 +183,13 @@ public class MainActivity extends AppCompatActivity {
                             bottomNavigationView.setSelectedItemId(R.id.nav_settings);
                             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new SettingsFragment()).commit();
                             break;
-                        case R.id.drawer_navigation_notifications:
-                            bottomNavigationView.setSelectedItemId(R.id.nav_notifications);
-                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new NotificationsFragment()).commit();
-                            break;
                         case R.id.drawer_navigation_info:
                             bottomNavigationView.setSelectedItemId(R.id.nav_info);
                             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new InfoFragment()).commit();
+                            break;
+                        case R.id.drawer_navigation_notifications:
+                            bottomNavigationView.setSelectedItemId(R.id.nav_notifications);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new MessagesFragment()).commit();
                             break;
                     }
                     drawerLayout.closeDrawer(GravityCompat.START);
