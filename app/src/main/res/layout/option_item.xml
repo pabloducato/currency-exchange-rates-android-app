@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:background="@drawable/button_background_backend"
-    app:cardCornerRadius="80dp">
+    app:cardCornerRadius="40dp">
 
     <RelativeLayout
         android:layout_width="match_parent"

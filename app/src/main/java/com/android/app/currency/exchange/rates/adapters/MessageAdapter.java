@@ -36,6 +36,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         public TextView messageDescription;
         public TextView messageDate;
         public TextView messageTime;
+        public TextView messageCopyright;
         public TextView messageLink;
 
         MessageAdapter.OnItemClickListener onItemClickListener;
@@ -47,6 +48,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             messageDescription = itemView.findViewById(R.id.message_description);
             messageDate = itemView.findViewById(R.id.message_date);
             messageTime = itemView.findViewById(R.id.message_time);
+            messageCopyright = itemView.findViewById(R.id.message_copyright);
             messageLink = itemView.findViewById(R.id.message_link);
             this.onItemClickListener = onItemClickListener;
             itemView.setOnClickListener(this);
@@ -73,6 +75,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         holder.messageDescription.setText(currentItem.getMessageDescription());
         holder.messageDate.setText(currentItem.getMessageDate());
         holder.messageTime.setText(currentItem.getMessageTime());
+        holder.messageCopyright.setText(currentItem.getMessageCopyright());
         holder.messageLink.setText(currentItem.getMessageLink());
     }
 

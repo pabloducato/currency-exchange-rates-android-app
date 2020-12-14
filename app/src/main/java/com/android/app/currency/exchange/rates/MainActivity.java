@@ -3,8 +3,23 @@ package com.android.app.currency.exchange.rates;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.MenuItem;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.android.app.currency.exchange.rates.fragments.HomeFragment;
 import com.android.app.currency.exchange.rates.fragments.InfoFragment;
@@ -22,20 +37,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.MenuItem;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,6 +51,11 @@ public class MainActivity extends AppCompatActivity {
     public LinearLayout linearLayout;
     private DatabaseReference databaseReference;
     private String userId;
+
+    public ArrayList<HashMap<String, String>> newsList;
+    private String messageURLString = "https://tvn24.pl/najnowsze.xml";
+    public List<String> xmlResultString = Collections.singletonList("");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
                 final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
+                @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     linearLayout = findViewById(R.id.linear_layout);
@@ -168,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final NavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener =
             new NavigationView.OnNavigationItemSelectedListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     switch (item.getItemId()) {
