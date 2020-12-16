@@ -34,7 +34,7 @@ public class CurrencyCFragment extends Fragment implements CurrencyCAdapter.OnIt
         assert getArguments() != null;
         String[] arrayCurrencyList = getArguments().getStringArray("currencyTableC");
         for (String s : arrayCurrencyList) {
-            currencyList.add(new CurrencyCItem(R.drawable.ic_baseline_euro_24, s.split(";")[0], s.split(";")[1], s.split(";")[2].substring(0, 4), s.split(";")[2].substring(0, 4)));
+            currencyList.add(new CurrencyCItem(R.drawable.ic_baseline_euro_24, s.split(";")[0], s.split(";")[1], s.split(";")[2].length() == 4 ? s.split(";")[2].substring(0, 4) : s.split(";")[2].substring(0, 3) + "0", s.split(";")[2].length() == 4 ? s.split(";")[2].substring(0, 4) : s.split(";")[2].substring(0, 3) + "0"));
         }
         recyclerView = fragmentView.findViewById(R.id.currency_c_recycler_view);
         recyclerView.setHasFixedSize(true);

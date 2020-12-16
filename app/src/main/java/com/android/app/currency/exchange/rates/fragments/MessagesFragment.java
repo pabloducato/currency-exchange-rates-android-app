@@ -37,8 +37,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 public class MessagesFragment extends Fragment implements MessageAdapter.OnItemClickListener {
 
-    private ArrayList<MessageItem> messageList = new ArrayList<>();
-    private String messageURLString = "https://tvn24.pl/najnowsze.xml";
+    private final ArrayList<MessageItem> messageList = new ArrayList<>();
     public List<String> list = new ArrayList<>();
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -84,6 +83,7 @@ public class MessagesFragment extends Fragment implements MessageAdapter.OnItemC
 
     public void parseXml(List<String> list) throws IOException, SAXException, ParserConfigurationException {
 
+        String messageURLString = "https://tvn24.pl/najnowsze.xml";
         URL url = new URL(messageURLString);
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

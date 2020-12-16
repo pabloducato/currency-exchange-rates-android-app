@@ -1,8 +1,10 @@
 package com.android.app.currency.exchange.rates;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,12 +39,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
+
+    public static final String GLOBAL_SHARED_PREFERENCES = "sharedPreferences";
+    public String backgroundTheme;
+    public String screenOrientation;
+    private String BACK_THEME;
+    private String SCREEN_ORIENTATION;
 
     private DrawerLayout drawerLayout;
     public BottomNavigationView bottomNavigationView;
@@ -52,13 +55,9 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private String userId;
 
-    public ArrayList<HashMap<String, String>> newsList;
-    private String messageURLString = "https://tvn24.pl/najnowsze.xml";
-    public List<String> xmlResultString = Collections.singletonList("");
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        updateUserSettings();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -134,12 +133,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             deleteAccount.setPressed(true);
                             Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    deleteUserAccount(firebaseUser);
-                                }
-                            }, 100);
+                            handler.postDelayed(() -> deleteUserAccount(firebaseUser), 100);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -258,6 +252,28 @@ public class MainActivity extends AppCompatActivity {
         dialog.setNegativeButton("Anuluj", (dialog12, which) -> dialog12.dismiss());
         AlertDialog alertDialog = dialog.create();
         alertDialog.show();
+    }
+
+    private void loadScreenOrientationSettings() {
+        SharedPreferences sharedPreferences = getSharedPreferences(GLOBAL_SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        screenOrientation = sharedPreferences.getString(SCREEN_ORIENTATION, "");
+    }
+
+    private void loadBackgroundThemeSettings() {
+        SharedPreferences sharedPreferences = getSharedPreferences(GLOBAL_SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        backgroundTheme = sharedPreferences.getString(BACK_THEME, "");
+    }
+
+    private void updateUserSettings() {
+        loadScreenOrientationSettings();
+        loadBackgroundThemeSettings();
+        if (screenOrientation != null && screenOrientation.equals("SCREEN_ORIENTATION_PORTRAIT")) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else if (screenOrientation != null && screenOrientation.equals("SCREEN_ORIENTATION_LANDSCAPE")) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
     }
 
     private void showStartDialog() {

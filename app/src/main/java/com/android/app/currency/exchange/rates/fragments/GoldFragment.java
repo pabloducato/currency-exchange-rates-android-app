@@ -33,7 +33,13 @@ public class GoldFragment extends Fragment implements GoldAdapter.OnItemClickLis
         }
         assert getArguments() != null;
         String arrayGoldString = getArguments().getString("gold");
-        goldList.add(new GoldItem(R.drawable.ic_baseline_star_24, arrayGoldString.split(";")[0], "Cena 1g (próba 1000)", arrayGoldString.split(";")[1].substring(0,6), arrayGoldString.split(";")[1].substring(0,6)));
+        String price;
+        if (arrayGoldString.split(";")[1].length() < 6) {
+            price = arrayGoldString.split(";")[1] + "0";
+        } else {
+            price = arrayGoldString.split(";")[1];
+        }
+        goldList.add(new GoldItem(R.drawable.ic_baseline_star_24, arrayGoldString.split(";")[0], "Cena 1g (próba 1000)", price, price));
         recyclerView = fragmentView.findViewById(R.id.gold_recycler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
