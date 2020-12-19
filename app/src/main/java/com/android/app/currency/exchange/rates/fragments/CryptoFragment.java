@@ -1,5 +1,6 @@
 package com.android.app.currency.exchange.rates.fragments;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,11 @@ public class CryptoFragment extends Fragment implements CryptoAdapter.OnItemClic
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_crypto, container, false);
+        recyclerView = fragmentView.findViewById(R.id.crypto_recycler_view);
+        AnimationDrawable animationDrawable = (AnimationDrawable) recyclerView.getBackground();
+        animationDrawable.setEnterFadeDuration(2000);
+        animationDrawable.setExitFadeDuration(2000);
+        animationDrawable.start();
         if (cryptoList != null || cryptoList.size() > 0) {
             cryptoList.clear();
         }
@@ -36,7 +42,6 @@ public class CryptoFragment extends Fragment implements CryptoAdapter.OnItemClic
         for (String s : arrayCryptoList) {
             cryptoList.add(new CryptoItem(R.drawable.ic_baseline_euro_24, s.split(";")[0], s.split(";")[1], s.split(";")[3].substring(0, 4), s.split(";")[2].substring(0, 8)));
         }
-        recyclerView = fragmentView.findViewById(R.id.crypto_recycler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         adapter = new CryptoAdapter(cryptoList, this);

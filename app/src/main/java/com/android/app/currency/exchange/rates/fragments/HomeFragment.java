@@ -1,10 +1,12 @@
 package com.android.app.currency.exchange.rates.fragments;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,12 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View fragmentView = inflater.inflate(R.layout.fragment_home, container, false);
+        RecyclerView recyclerView = fragmentView.findViewById(R.id.home_recycler_view);
+        AnimationDrawable animationDrawable = (AnimationDrawable) recyclerView.getBackground();
+        animationDrawable.setEnterFadeDuration(2000);
+        animationDrawable.setExitFadeDuration(2000);
+        animationDrawable.start();
+        return fragmentView;
     }
 }

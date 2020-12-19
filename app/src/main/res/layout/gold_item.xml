@@ -4,12 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
+    app:cardBackgroundColor="@color/panelBackground"
     app:cardCornerRadius="40dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp">
+        android:layout_margin="5dp"
+        android:background="@color/panelBackground">
 
         <ImageView
             android:id="@+id/gold_image_view"
@@ -26,7 +28,7 @@
             android:layout_toEndOf="@+id/gold_image_view"
             android:layout_toRightOf="@+id/gold_image_view"
             android:text="Line 1"
-            android:textColor="@color/black"
+            android:textColor="@color/tabColor1"
             android:textSize="12sp"
             android:textStyle="bold" />
 
@@ -39,7 +41,7 @@
             android:layout_alignLeft="@+id/gold_rate_abbreviation"
             android:layout_alignParentTop="false"
             android:text="999"
-            android:textColor="@color/black"
+            android:textColor="@color/tabColor1"
             android:textSize="12sp"
             android:textStyle="bold" />
 
@@ -52,6 +54,7 @@
             android:layout_alignLeft="@+id/gold_rate_value"
             android:layout_alignParentTop="false"
             android:text="Line 2"
+            android:textColor="@color/tabColor1"
             android:textSize="12sp"
             android:textStyle="bold" />
 
@@ -59,9 +62,6 @@
             android:id="@+id/gold_rate_big_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/currency_rate_description"
-            android:layout_alignLeft="@+id/currency_rate_description"
-            android:layout_alignBottom="@+id/currency_rate_description"
             android:layout_marginStart="200dp"
             android:layout_marginLeft="200dp"
             android:layout_marginTop="1dp"

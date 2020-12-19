@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -41,7 +42,8 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String GLOBAL_SHARED_PREFERENCES = "sharedPreferences";
+    public static final String GLOBAL_SHARED_PREFERENCES_ORIENTATION = "orientationSharedPreferences";
+    public static final String GLOBAL_SHARED_PREFERENCES_DARK_MODE = "darkModeSharedPreferences";
     public String backgroundTheme;
     public String screenOrientation;
     private String BACK_THEME;
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+        assert firebaseUser != null;
         userId = firebaseUser.getUid();
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferences", MODE_PRIVATE);
         boolean firstStart = sharedPreferences.getBoolean("firstStart", true);
@@ -255,24 +258,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadScreenOrientationSettings() {
-        SharedPreferences sharedPreferences = getSharedPreferences(GLOBAL_SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(GLOBAL_SHARED_PREFERENCES_ORIENTATION, Context.MODE_PRIVATE);
         screenOrientation = sharedPreferences.getString(SCREEN_ORIENTATION, "");
     }
 
     private void loadBackgroundThemeSettings() {
-        SharedPreferences sharedPreferences = getSharedPreferences(GLOBAL_SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(GLOBAL_SHARED_PREFERENCES_DARK_MODE, Context.MODE_PRIVATE);
         backgroundTheme = sharedPreferences.getString(BACK_THEME, "");
     }
 
     private void updateUserSettings() {
         loadScreenOrientationSettings();
         loadBackgroundThemeSettings();
+
         if (screenOrientation != null && screenOrientation.equals("SCREEN_ORIENTATION_PORTRAIT")) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else if (screenOrientation != null && screenOrientation.equals("SCREEN_ORIENTATION_LANDSCAPE")) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+
+        if (backgroundTheme != null && backgroundTheme.equals("MODE_NIGHT_NO")) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        } else if (backgroundTheme != null && backgroundTheme.equals("MODE_NIGHT_YES")) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
 

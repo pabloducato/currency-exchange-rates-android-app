@@ -1,5 +1,6 @@
 package com.android.app.currency.exchange.rates.fragments;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,11 @@ public class CurrencyCFragment extends Fragment implements CurrencyCAdapter.OnIt
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_currency_c, container, false);
+        recyclerView = fragmentView.findViewById(R.id.currency_c_recycler_view);
+        AnimationDrawable animationDrawable = (AnimationDrawable) recyclerView.getBackground();
+        animationDrawable.setEnterFadeDuration(2000);
+        animationDrawable.setExitFadeDuration(2000);
+        animationDrawable.start();
         if (currencyList != null || currencyList.size() > 0) {
             currencyList.clear();
         }
@@ -36,7 +42,6 @@ public class CurrencyCFragment extends Fragment implements CurrencyCAdapter.OnIt
         for (String s : arrayCurrencyList) {
             currencyList.add(new CurrencyCItem(R.drawable.ic_baseline_euro_24, s.split(";")[0], s.split(";")[1], s.split(";")[2].length() == 4 ? s.split(";")[2].substring(0, 4) : s.split(";")[2].substring(0, 3) + "0", s.split(";")[2].length() == 4 ? s.split(";")[2].substring(0, 4) : s.split(";")[2].substring(0, 3) + "0"));
         }
-        recyclerView = fragmentView.findViewById(R.id.currency_c_recycler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         adapter = new CurrencyCAdapter(currencyList, this);

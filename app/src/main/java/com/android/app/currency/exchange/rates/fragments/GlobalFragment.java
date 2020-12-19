@@ -1,5 +1,6 @@
 package com.android.app.currency.exchange.rates.fragments;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,11 @@ public class GlobalFragment extends Fragment implements GlobalAdapter.OnItemClic
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_global, container, false);
+        recyclerView = fragmentView.findViewById(R.id.global_recycler_view);
+        AnimationDrawable animationDrawable = (AnimationDrawable) recyclerView.getBackground();
+        animationDrawable.setEnterFadeDuration(2000);
+        animationDrawable.setExitFadeDuration(2000);
+        animationDrawable.start();
         if (globalList != null || globalList.size() > 0) {
             globalList.clear();
         }
@@ -36,7 +42,6 @@ public class GlobalFragment extends Fragment implements GlobalAdapter.OnItemClic
         for (String s : arrayGlobalCurrencyList) {
             globalList.add(new GlobalItem(R.drawable.ic_baseline_euro_24, s.split(";")[0], s.split(";")[1], s.split(";")[2].substring(0, 3)));
         }
-        recyclerView = fragmentView.findViewById(R.id.global_recycler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         adapter = new GlobalAdapter(globalList, this);

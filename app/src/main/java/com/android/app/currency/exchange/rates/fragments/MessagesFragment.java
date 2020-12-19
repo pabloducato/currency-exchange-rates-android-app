@@ -1,6 +1,7 @@
 package com.android.app.currency.exchange.rates.fragments;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -45,6 +46,12 @@ public class MessagesFragment extends Fragment implements MessageAdapter.OnItemC
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_notifications, container, false);
+        RecyclerView recyclerView = fragmentView.findViewById(R.id.message_recycler_view);
+        AnimationDrawable animationDrawable = (AnimationDrawable) recyclerView.getBackground();
+        animationDrawable.setEnterFadeDuration(2000);
+        animationDrawable.setExitFadeDuration(2000);
+        animationDrawable.start();
+
         if (messageList != null || messageList.size() > 0) {
             messageList.clear();
         }
@@ -72,7 +79,6 @@ public class MessagesFragment extends Fragment implements MessageAdapter.OnItemC
             i = i + 4;
         }
 
-        RecyclerView recyclerView = fragmentView.findViewById(R.id.message_recycler_view);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         MessageAdapter adapter = new MessageAdapter(messageList, this);

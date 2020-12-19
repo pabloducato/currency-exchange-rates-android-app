@@ -5,19 +5,21 @@
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:background="@drawable/button_background_backend"
+    app:cardBackgroundColor="@color/panelBackground"
     app:cardCornerRadius="40dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp">
+        android:layout_margin="5dp"
+        android:background="@color/panelBackground">
 
         <ImageView
             android:id="@+id/setting_image_view"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:padding="2dp"
-            app:tint="@color/old_gold" />
+            app:tint="@color/imageItemColor" />
 
         <TextView
             android:id="@+id/setting_name"
@@ -27,7 +29,7 @@
             android:layout_toEndOf="@+id/setting_image_view"
             android:layout_toRightOf="@+id/setting_image_view"
             android:text="Line 1"
-            android:textColor="@color/black"
+            android:textColor="@color/tabColor1"
             android:textSize="12sp"
             android:textStyle="bold" />
 

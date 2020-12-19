@@ -1,5 +1,6 @@
 package com.android.app.currency.exchange.rates.fragments;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,11 @@ public class GoldFragment extends Fragment implements GoldAdapter.OnItemClickLis
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_gold, container, false);
+        recyclerView = fragmentView.findViewById(R.id.gold_recycler_view);
+        AnimationDrawable animationDrawable = (AnimationDrawable) recyclerView.getBackground();
+        animationDrawable.setEnterFadeDuration(2000);
+        animationDrawable.setExitFadeDuration(2000);
+        animationDrawable.start();
         if (goldList != null || goldList.size() > 0) {
             goldList.clear();
         }
@@ -40,7 +46,6 @@ public class GoldFragment extends Fragment implements GoldAdapter.OnItemClickLis
             price = arrayGoldString.split(";")[1];
         }
         goldList.add(new GoldItem(R.drawable.ic_baseline_star_24, arrayGoldString.split(";")[0], "Cena 1g (próba 1000)", price, price));
-        recyclerView = fragmentView.findViewById(R.id.gold_recycler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         adapter = new GoldAdapter(goldList, this);

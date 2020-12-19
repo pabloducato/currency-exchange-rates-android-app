@@ -4,7 +4,7 @@
     android:id="@+id/linear_layout"
     android:layout_width="match_parent"
     android:layout_height="340dp"
-    android:background="@color/silver"
+    android:background="@color/mainBackground"
     android:gravity="bottom"
     android:orientation="vertical"
     android:padding="16dp"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:text="Adres E-Mail:"
-        android:textColor="@color/black"
+        android:textColor="@color/tabColor1"
         android:textSize="15sp"
         android:textStyle="bold" />
 
@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
-        android:textColor="@color/black"
+        android:textColor="@color/tabColor1"
         android:textSize="15sp"
         android:textStyle="normal" />
 
@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:text="Imię i Nazwisko:"
-        android:textColor="@color/black"
+        android:textColor="@color/tabColor1"
         android:textSize="15sp"
         android:textStyle="bold" />
 
@@ -52,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
-        android:textColor="@color/black"
+        android:textColor="@color/tabColor1"
         android:textSize="15sp"
         android:textStyle="normal" />
 
@@ -68,7 +68,7 @@
         android:paddingEnd="40dp"
         android:paddingRight="40dp"
         android:text="WYLOGUJ SIĘ"
-        android:textColor="@android:color/black"
+        android:textColor="@color/black"
         android:textSize="15sp"
         app:drawableLeftCompat="@drawable/ic_baseline_exit_to_app_24" />
 
@@ -84,7 +84,7 @@
         android:paddingEnd="40dp"
         android:paddingRight="40dp"
         android:text="USUŃ KONTO"
-        android:textColor="@android:color/black"
+        android:textColor="@color/black"
         android:textSize="15sp"
         app:drawableLeftCompat="@drawable/ic_baseline_delete_forever_24" />
 
