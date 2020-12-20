@@ -1,7 +1,6 @@
 package com.android.app.currency.exchange.rates;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -46,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String GLOBAL_SHARED_PREFERENCES_DARK_MODE = "darkModeSharedPreferences";
     public String backgroundTheme;
     public String screenOrientation;
-    private String BACK_THEME;
-    private String SCREEN_ORIENTATION;
+    public String BACK_THEME;
+    public String SCREEN_ORIENTATION;
 
     private DrawerLayout drawerLayout;
     public BottomNavigationView bottomNavigationView;
@@ -104,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 logout.setPressed(true);
                 Handler handler = new Handler();
-                handler.postDelayed(() -> logoutUser(), 100);
+                handler.postDelayed(this::logoutUser, 100);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -293,12 +292,7 @@ public class MainActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle("One Time Dialog")
                 .setMessage("This should only be shown once")
-                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
+                .setPositiveButton("ok", (dialogInterface, i) -> dialogInterface.dismiss())
                 .create().show();
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferences", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
