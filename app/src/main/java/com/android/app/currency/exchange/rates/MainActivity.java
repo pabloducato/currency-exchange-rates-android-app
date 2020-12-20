@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
         assert firebaseUser != null;
         userId = firebaseUser.getUid();
+
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferences", MODE_PRIVATE);
         boolean firstStart = sharedPreferences.getBoolean("firstStart", true);
         if (firstStart) {
@@ -91,6 +92,34 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.navigation_view);
         navigationView.getMenu().getItem(0).setChecked(true);
         navigationView.setNavigationItemSelectedListener(onNavigationItemSelectedListener);
+
+        linearLayout = navigationView.getHeaderView(0).findViewById(R.id.linear_layout);
+        TextView logout = linearLayout.findViewById(R.id.text_view_logout);
+        TextView deleteAccount = linearLayout.findViewById(R.id.text_view_delete_account);
+        TextView emailTextView = linearLayout.findViewById(R.id.email_address);
+        TextView fullNameTextView = linearLayout.findViewById(R.id.full_name);
+        loadUserInformation(emailTextView, fullNameTextView, firebaseUser);
+
+        logout.setOnClickListener(v -> {
+            try {
+                logout.setPressed(true);
+                Handler handler = new Handler();
+                handler.postDelayed(() -> logoutUser(), 100);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        deleteAccount.setOnClickListener(v -> {
+            try {
+                deleteAccount.setPressed(true);
+                Handler handler = new Handler();
+                handler.postDelayed(() -> deleteUserAccount(firebaseUser), 100);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 
     @Override
@@ -109,38 +138,10 @@ public class MainActivity extends AppCompatActivity {
 
     private final BottomNavigationView.OnNavigationItemSelectedListener onBottomNavigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
-                final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-                final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    linearLayout = findViewById(R.id.linear_layout);
-                    TextView logout = linearLayout.findViewById(R.id.text_view_logout);
-                    TextView deleteAccount = linearLayout.findViewById(R.id.text_view_delete_account);
-                    TextView emailTextView = linearLayout.findViewById(R.id.email_address);
-                    TextView fullNameTextView = linearLayout.findViewById(R.id.full_name);
-                    loadUserInformation(emailTextView, fullNameTextView, firebaseUser);
-
-                    logout.setOnClickListener(v -> {
-                        try {
-                            logout.setPressed(true);
-                            Handler handler = new Handler();
-                            handler.postDelayed(() -> logoutUser(), 100);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    });
-
-                    deleteAccount.setOnClickListener(v -> {
-                        try {
-                            deleteAccount.setPressed(true);
-                            Handler handler = new Handler();
-                            handler.postDelayed(() -> deleteUserAccount(firebaseUser), 100);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    });
 
                     switch (item.getItemId()) {
                         case R.id.nav_home:

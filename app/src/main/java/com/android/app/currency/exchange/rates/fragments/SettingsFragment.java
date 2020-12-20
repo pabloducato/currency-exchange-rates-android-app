@@ -23,6 +23,7 @@ import com.android.app.currency.exchange.rates.adapters.SettingAdapter;
 import com.android.app.currency.exchange.rates.items.SettingItem;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class SettingsFragment extends Fragment implements SettingAdapter.OnItemClickListener {
 
@@ -71,14 +72,14 @@ public class SettingsFragment extends Fragment implements SettingAdapter.OnItemC
     }
 
     private void saveScreenOrientationSettings() {
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences(GLOBAL_SHARED_PREFERENCES_ORIENTATION, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = Objects.requireNonNull(getContext()).getSharedPreferences(GLOBAL_SHARED_PREFERENCES_ORIENTATION, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         if (selectedAppScreenOrientation.equals("Pionowa")) {
-            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            Objects.requireNonNull(getActivity()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             editor.putString(SCREEN_ORIENTATION, "SCREEN_ORIENTATION_PORTRAIT");
         }
         if (selectedAppScreenOrientation.equals("Pozioma")) {
-            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            Objects.requireNonNull(getActivity()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             editor.putString(SCREEN_ORIENTATION, "SCREEN_ORIENTATION_LANDSCAPE");
         }
         editor.apply();
@@ -147,12 +148,12 @@ public class SettingsFragment extends Fragment implements SettingAdapter.OnItemC
     }
 
     private void loadScreenOrientationSettings() {
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences(GLOBAL_SHARED_PREFERENCES_ORIENTATION, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = Objects.requireNonNull(getContext()).getSharedPreferences(GLOBAL_SHARED_PREFERENCES_ORIENTATION, Context.MODE_PRIVATE);
         screenOrientation = sharedPreferences.getString(SCREEN_ORIENTATION, "");
     }
 
     private void loadBackgroundThemeSettings() {
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences(GLOBAL_SHARED_PREFERENCES_DARK_MODE, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = Objects.requireNonNull(getContext()).getSharedPreferences(GLOBAL_SHARED_PREFERENCES_DARK_MODE, Context.MODE_PRIVATE);
         backgroundTheme = sharedPreferences.getString(BACK_THEME, "");
     }
 
