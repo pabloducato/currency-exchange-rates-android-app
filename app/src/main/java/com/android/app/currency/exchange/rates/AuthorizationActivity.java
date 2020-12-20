@@ -23,6 +23,7 @@ public class AuthorizationActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         } else {
+            setTheme(R.style.Theme_Currencyexchangeratesandroidapp);
             setContentView(R.layout.activity_authorization);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_authorization_container, new AuthorizationFragment(), "AUTHORIZATION_FRAGMENT").commit();
         }

@@ -11,7 +11,7 @@
         android:theme="@style/Theme.Currencyexchangeratesandroidapp">
         <activity
             android:name=".AuthorizationActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/splashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

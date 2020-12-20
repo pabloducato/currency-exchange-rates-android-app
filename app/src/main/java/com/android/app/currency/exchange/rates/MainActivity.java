@@ -60,34 +60,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         updateUserSettings();
         super.onCreate(savedInstanceState);
+        setTheme(R.style.Theme_Currencyexchangeratesandroidapp);
         setContentView(R.layout.activity_main);
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
         assert firebaseUser != null;
         userId = firebaseUser.getUid();
 
-        SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferences", MODE_PRIVATE);
-        boolean firstStart = sharedPreferences.getBoolean("firstStart", true);
-        if (firstStart) {
-            showStartDialog();
-        }
-        topNavigationView = findViewById(R.id.top_navigation);
-        topNavigationView.getMenu().setGroupCheckable(0, false, true);
-        topNavigationView.setOnNavigationItemSelectedListener(onBottomNavigationItemSelectedListener);
-        topNavigationView.getMenu().findItem(R.id.nav_menu_open).setEnabled(true);
-        topNavigationView.getMenu().findItem(R.id.nav_menu_open).setChecked(false);
-        topNavigationView.getMenu().findItem(R.id.nav_menu_return).setEnabled(true);
-        topNavigationView.getMenu().findItem(R.id.nav_menu_return).setChecked(false);
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(onBottomNavigationItemSelectedListener);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, new HomeFragment());
-        fragmentTransaction.commit();
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
         navigationView.getMenu().getItem(0).setChecked(true);
         navigationView.setNavigationItemSelectedListener(onNavigationItemSelectedListener);
@@ -119,6 +98,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferences", MODE_PRIVATE);
+        boolean firstStart = sharedPreferences.getBoolean("firstStart", true);
+        if (firstStart) {
+            showStartDialog();
+        }
+        topNavigationView = findViewById(R.id.top_navigation);
+        topNavigationView.getMenu().setGroupCheckable(0, false, true);
+        topNavigationView.setOnNavigationItemSelectedListener(onBottomNavigationItemSelectedListener);
+        topNavigationView.getMenu().findItem(R.id.nav_menu_open).setEnabled(true);
+        topNavigationView.getMenu().findItem(R.id.nav_menu_open).setChecked(false);
+        topNavigationView.getMenu().findItem(R.id.nav_menu_return).setEnabled(true);
+        topNavigationView.getMenu().findItem(R.id.nav_menu_return).setChecked(false);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(onBottomNavigationItemSelectedListener);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.fragment_container, new HomeFragment());
+        fragmentTransaction.commit();
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawerLayout = findViewById(R.id.drawer_layout);
     }
 
     @Override
