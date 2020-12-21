@@ -1,7 +1,12 @@
 package com.android.app.currency.exchange.rates.fragments;
 
+import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,14 +16,12 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.android.app.currency.exchange.rates.VolleySingleton;
-import com.android.app.currency.exchange.rates.items.OptionItem;
 import com.android.app.currency.exchange.rates.R;
+import com.android.app.currency.exchange.rates.VolleySingleton;
+import com.android.app.currency.exchange.rates.adapters.InternetExceptionAdapter;
 import com.android.app.currency.exchange.rates.adapters.OptionAdapter;
+import com.android.app.currency.exchange.rates.items.InternetExceptionItem;
+import com.android.app.currency.exchange.rates.items.OptionItem;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -45,6 +48,10 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
     private final ArrayList<String> goldList = new ArrayList<>();
     private final ArrayList<String> cryptoList = new ArrayList<>();
     private final ArrayList<String> globalCurrencyList = new ArrayList<>();
+    private final ArrayList<InternetExceptionItem> internetExceptionList = new ArrayList<>();
+    SimpleDateFormat time_format = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+
 
     @Nullable
     @Override
@@ -58,16 +65,30 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
         if (optionList != null || optionList.size() > 0) {
             optionList.clear();
         }
-        optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut NBP tabela A w PLN", "Waluty", "Opis"));
-        optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut NBP tabela C w PLN", "Waluty", "Opis"));
-        optionList.add(new OptionItem(R.drawable.ic_baseline_star_24, "Kursy złota", "Złoto", "Opis"));
-        optionList.add(new OptionItem(R.drawable.ic_baseline_monetization_on_24, "Kursy kryptowalut", "Kryptowaluty", "Opis"));
-        optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut globalnych w USD", "Waluty", "Opis"));
+
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        OptionAdapter adapter = new OptionAdapter(optionList, this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+
+        if (isNetworkAvailable(Objects.requireNonNull(getContext()))) {
+            try {
+                optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut NBP tabela A w PLN", "Waluty", "Opis"));
+                optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut NBP tabela C w PLN", "Waluty", "Opis"));
+                optionList.add(new OptionItem(R.drawable.ic_baseline_star_24, "Kursy złota", "Złoto", "Opis"));
+                optionList.add(new OptionItem(R.drawable.ic_baseline_monetization_on_24, "Kursy kryptowalut", "Kryptowaluty", "Opis"));
+                optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut globalnych w USD", "Waluty", "Opis"));
+                OptionAdapter adapter = new OptionAdapter(optionList, this);
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setAdapter(adapter);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            internetExceptionList.add(new InternetExceptionItem(R.drawable.ic_baseline_info_24, formatter.format(Calendar.getInstance().getTime()), time_format.format(Calendar.getInstance().getTime()), "Brak połączenia z Internetem"));
+            InternetExceptionAdapter adapter = new InternetExceptionAdapter(internetExceptionList, this::onItemClick);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(adapter);
+        }
+
         return fragmentView;
     }
 
@@ -302,5 +323,10 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
                 0,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
+
+    public boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 }

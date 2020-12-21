@@ -1,6 +1,8 @@
 package com.android.app.currency.exchange.rates.fragments;
 
+import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,22 +16,28 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.app.currency.exchange.rates.R;
 import com.android.app.currency.exchange.rates.adapters.GlobalAdapter;
+import com.android.app.currency.exchange.rates.adapters.InternetExceptionAdapter;
 import com.android.app.currency.exchange.rates.items.GlobalItem;
+import com.android.app.currency.exchange.rates.items.InternetExceptionItem;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.Objects;
 
 public class GlobalFragment extends Fragment implements GlobalAdapter.OnItemClickListener {
 
-    private RecyclerView recyclerView;
-    private GlobalAdapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<GlobalItem> globalList = new ArrayList<>();
+    private final ArrayList<GlobalItem> globalList = new ArrayList<>();
+    private final ArrayList<InternetExceptionItem> internetExceptionList = new ArrayList<>();
+    SimpleDateFormat time_format = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_global, container, false);
-        recyclerView = fragmentView.findViewById(R.id.global_recycler_view);
+        RecyclerView recyclerView = fragmentView.findViewById(R.id.global_recycler_view);
         AnimationDrawable animationDrawable = (AnimationDrawable) recyclerView.getBackground();
         animationDrawable.setEnterFadeDuration(2000);
         animationDrawable.setExitFadeDuration(2000);
@@ -39,28 +47,38 @@ public class GlobalFragment extends Fragment implements GlobalAdapter.OnItemClic
         }
         assert getArguments() != null;
         String[] arrayGlobalCurrencyList = getArguments().getStringArray("global");
-        for (String s : arrayGlobalCurrencyList) {
-            globalList.add(new GlobalItem(R.drawable.ic_baseline_euro_24, s.split(";")[0], s.split(";")[1], s.split(";")[2].substring(0, 3)));
-        }
+
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getActivity());
-        adapter = new GlobalAdapter(globalList, this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+
+        if (isNetworkAvailable(Objects.requireNonNull(getContext())) && arrayGlobalCurrencyList != null) {
+            try {
+                for (String s : arrayGlobalCurrencyList) {
+                    globalList.add(new GlobalItem(R.drawable.ic_baseline_euro_24, s.split(";")[0], s.split(";")[1], s.split(";")[2].substring(0, 3)));
+                }
+                GlobalAdapter adapter = new GlobalAdapter(globalList, this);
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setAdapter(adapter);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            internetExceptionList.add(new InternetExceptionItem(R.drawable.ic_baseline_info_24, formatter.format(Calendar.getInstance().getTime()), time_format.format(Calendar.getInstance().getTime()), "Brak połączenia z Internetem"));
+            InternetExceptionAdapter adapter = new InternetExceptionAdapter(internetExceptionList, this::onItemClick);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(adapter);
+        }
+
         return fragmentView;
     }
 
     @Override
     public void onItemClick(int position) {
-//        Intent intent;
-//        switch (position) {
-//            default:
-//                Log.d(TAG, "onItemClick: clicked.");
-//                intent = new Intent(getActivity(), CryptoActivity.class);
-//                intent.putExtra("some_object", "something_else");
-//                startActivity(intent);
-//                break;
-//        }
+    }
+
+    public boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 
 }

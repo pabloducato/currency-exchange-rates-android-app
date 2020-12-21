@@ -49,8 +49,14 @@ public class SettingsFragment extends Fragment implements SettingAdapter.OnItemC
         if (settingsList != null || settingsList.size() > 0) {
             settingsList.clear();
         }
-        settingsList.add(new SettingItem(R.drawable.ic_baseline_highlight_24, "Dark mode"));
-        settingsList.add(new SettingItem(R.drawable.ic_baseline_screen_rotation_24, "Orientacja ekranu"));
+
+        try {
+            settingsList.add(new SettingItem(R.drawable.ic_baseline_highlight_24, "Dark mode"));
+            settingsList.add(new SettingItem(R.drawable.ic_baseline_screen_rotation_24, "Orientacja ekranu"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         SettingAdapter adapter = new SettingAdapter(settingsList, this);
@@ -110,7 +116,7 @@ public class SettingsFragment extends Fragment implements SettingAdapter.OnItemC
     }
 
     private void saveDarkModeSettings() {
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences(GLOBAL_SHARED_PREFERENCES_DARK_MODE, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = Objects.requireNonNull(getContext()).getSharedPreferences(GLOBAL_SHARED_PREFERENCES_DARK_MODE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         if (selectedAppBackgroundMode.equals("Jasny")) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);

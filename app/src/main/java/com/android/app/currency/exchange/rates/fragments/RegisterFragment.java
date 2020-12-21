@@ -132,7 +132,7 @@ public class RegisterFragment extends Fragment {
                             editTextEmail.setText("");
                             editTextPassword.setText("");
                             editTextConfirmPassword.setText("");
-                            getActivity().finish();
+                            Objects.requireNonNull(getActivity()).finish();
                         } else {
                             Toast.makeText(getContext(), "Rejestracja nieudana! Spróbuj ponownie!", Toast.LENGTH_LONG).show();
                         }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -38,6 +39,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -76,7 +79,12 @@ public class MainActivity extends AppCompatActivity {
         TextView deleteAccount = linearLayout.findViewById(R.id.text_view_delete_account);
         TextView emailTextView = linearLayout.findViewById(R.id.email_address);
         TextView fullNameTextView = linearLayout.findViewById(R.id.full_name);
-        loadUserInformation(emailTextView, fullNameTextView, firebaseUser);
+
+        if (isNetworkAvailable(Objects.requireNonNull(getApplicationContext()))) {
+            loadUserInformation(emailTextView, fullNameTextView, firebaseUser);
+        } else {
+            loadUserInformation(emailTextView, fullNameTextView, firebaseUser);
+        }
 
         logout.setOnClickListener(v -> {
             try {
@@ -299,6 +307,11 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("firstStart", false);
         editor.apply();
+    }
+
+    public boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 
 }

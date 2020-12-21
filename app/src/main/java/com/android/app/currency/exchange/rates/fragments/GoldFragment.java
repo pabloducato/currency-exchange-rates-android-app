@@ -1,6 +1,8 @@
 package com.android.app.currency.exchange.rates.fragments;
 
+import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,22 +16,28 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.app.currency.exchange.rates.R;
 import com.android.app.currency.exchange.rates.adapters.GoldAdapter;
+import com.android.app.currency.exchange.rates.adapters.InternetExceptionAdapter;
 import com.android.app.currency.exchange.rates.items.GoldItem;
+import com.android.app.currency.exchange.rates.items.InternetExceptionItem;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.Objects;
 
 public class GoldFragment extends Fragment implements GoldAdapter.OnItemClickListener {
 
-    private RecyclerView recyclerView;
-    private GoldAdapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<GoldItem> goldList = new ArrayList<>();
+    private final ArrayList<GoldItem> goldList = new ArrayList<>();
+    private final ArrayList<InternetExceptionItem> internetExceptionList = new ArrayList<>();
+    SimpleDateFormat time_format = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_gold, container, false);
-        recyclerView = fragmentView.findViewById(R.id.gold_recycler_view);
+        RecyclerView recyclerView = fragmentView.findViewById(R.id.gold_recycler_view);
         AnimationDrawable animationDrawable = (AnimationDrawable) recyclerView.getBackground();
         animationDrawable.setEnterFadeDuration(2000);
         animationDrawable.setExitFadeDuration(2000);
@@ -45,25 +53,35 @@ public class GoldFragment extends Fragment implements GoldAdapter.OnItemClickLis
         } else {
             price = arrayGoldString.split(";")[1];
         }
-        goldList.add(new GoldItem(R.drawable.ic_baseline_star_24, arrayGoldString.split(";")[0], "Cena 1g (próba 1000)", price, price));
+
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getActivity());
-        adapter = new GoldAdapter(goldList, this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+
+        if (isNetworkAvailable(Objects.requireNonNull(getContext())) && price != null) {
+            try {
+                goldList.add(new GoldItem(R.drawable.ic_baseline_star_24, arrayGoldString.split(";")[0], "Cena 1g (próba 1000)", price, price));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            GoldAdapter adapter = new GoldAdapter(goldList, this);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(adapter);
+        } else {
+            internetExceptionList.add(new InternetExceptionItem(R.drawable.ic_baseline_info_24, formatter.format(Calendar.getInstance().getTime()), time_format.format(Calendar.getInstance().getTime()), "Brak połączenia z Internetem"));
+            InternetExceptionAdapter adapter = new InternetExceptionAdapter(internetExceptionList, this::onItemClick);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(adapter);
+        }
+
         return fragmentView;
     }
 
     @Override
     public void onItemClick(int position) {
-//        Intent intent;
-//        switch (position) {
-//            default:
-//                Log.d(TAG, "onItemClick: clicked.");
-//                intent = new Intent(getActivity(), GoldActivity.class);
-//                intent.putExtra("some_object", "something_else");
-//                startActivity(intent);
-//                break;
-//        }
+    }
+
+    public boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 }

@@ -1,7 +1,9 @@
 package com.android.app.currency.exchange.rates.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,7 +20,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.app.currency.exchange.rates.R;
+import com.android.app.currency.exchange.rates.adapters.InternetExceptionAdapter;
 import com.android.app.currency.exchange.rates.adapters.MessageAdapter;
+import com.android.app.currency.exchange.rates.items.InternetExceptionItem;
 import com.android.app.currency.exchange.rates.items.MessageItem;
 
 import org.w3c.dom.Document;
@@ -29,8 +33,12 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -39,7 +47,10 @@ import javax.xml.parsers.ParserConfigurationException;
 public class MessagesFragment extends Fragment implements MessageAdapter.OnItemClickListener {
 
     private final ArrayList<MessageItem> messageList = new ArrayList<>();
+    private final ArrayList<InternetExceptionItem> internetExceptionList = new ArrayList<>();
     public List<String> list = new ArrayList<>();
+    SimpleDateFormat time_format = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
@@ -63,27 +74,36 @@ public class MessagesFragment extends Fragment implements MessageAdapter.OnItemC
             StrictMode.setThreadPolicy(policy);
             try {
                 parseXml(list);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (SAXException e) {
-                e.printStackTrace();
-            } catch (ParserConfigurationException e) {
+            } catch (IOException | SAXException | ParserConfigurationException e) {
                 e.printStackTrace();
             }
-        }
-        for (int i = 0; i < list.size(); ) {
-            int posT = list.get(i + 3).indexOf("T");
-            int posDot = list.get(i + 3).indexOf(".");
-            int posImgEnd = list.get(i + 2).indexOf(">");
-            messageList.add(new MessageItem(R.drawable.ic_baseline_fiber_new_24, list.get(i + 3).substring(0, posT), list.get(i + 3).substring(posT + 1, posDot), "Copyright: TVN", list.get(i), list.get(i + 2).substring(posImgEnd + 6, list.get(i + 2).length() - 10), list.get(i + 1)));
-            i = i + 4;
         }
 
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        MessageAdapter adapter = new MessageAdapter(messageList, this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+
+        if (isNetworkAvailable(Objects.requireNonNull(getContext()))) {
+            try {
+                for (int i = 0; i < list.size(); ) {
+                    int posT = list.get(i + 3).indexOf("T");
+                    int posDot = list.get(i + 3).indexOf(".");
+                    int posImgEnd = list.get(i + 2).indexOf(">");
+                    messageList.add(new MessageItem(R.drawable.ic_baseline_fiber_new_24, list.get(i + 3).substring(0, posT), list.get(i + 3).substring(posT + 1, posDot), "Copyright: TVN", list.get(i), list.get(i + 2).substring(posImgEnd + 6, list.get(i + 2).length() - 10), list.get(i + 1)));
+                    i = i + 4;
+                }
+                MessageAdapter adapter = new MessageAdapter(messageList, this);
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setAdapter(adapter);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            internetExceptionList.add(new InternetExceptionItem(R.drawable.ic_baseline_info_24, formatter.format(Calendar.getInstance().getTime()), time_format.format(Calendar.getInstance().getTime()), "Brak połączenia z Internetem"));
+            InternetExceptionAdapter adapter = new InternetExceptionAdapter(internetExceptionList, this::onItemClick);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(adapter);
+        }
+
         return fragmentView;
     }
 
@@ -119,10 +139,17 @@ public class MessagesFragment extends Fragment implements MessageAdapter.OnItemC
 
     @Override
     public void onItemClick(int position) {
-        String url = list.get((position * 4) + 1);
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(url));
-        startActivity(intent);
+        if (list.size() > 0) {
+            String url = list.get((position * 4) + 1);
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            startActivity(intent);
+        }
+    }
+
+    public boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 
 }
