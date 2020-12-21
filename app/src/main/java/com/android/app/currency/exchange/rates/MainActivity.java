@@ -40,7 +40,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+
+import static com.android.app.currency.exchange.rates.fragments.RegisterFragment.GLOBAL_SHARED_PREFERENCES_CREDENTIALS;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     public LinearLayout linearLayout;
     private DatabaseReference databaseReference;
     private String userId;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +89,12 @@ public class MainActivity extends AppCompatActivity {
         if (isNetworkAvailable(Objects.requireNonNull(getApplicationContext()))) {
             loadUserInformation(emailTextView, fullNameTextView, firebaseUser);
         } else {
-            loadUserInformation(emailTextView, fullNameTextView, firebaseUser);
+            Intent intent = getIntent();
+            String email = intent.getStringExtra("email");
+            sharedPreferences = Objects.requireNonNull(getApplicationContext()).getSharedPreferences(GLOBAL_SHARED_PREFERENCES_CREDENTIALS, Context.MODE_PRIVATE);
+            Set<String> mySet = sharedPreferences.getStringSet(email, null);
+            List<String> userData = new ArrayList<>(mySet);
+            loadUserInformation(emailTextView, fullNameTextView, userData);
         }
 
         logout.setOnClickListener(v -> {
@@ -236,6 +247,17 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Coś poszło nie tak!", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void loadUserInformation(TextView emailTextView, TextView fullNameTextView, List<String> userData) {
+        String email = null;
+        String fullName = null;
+        for (String s : userData) {
+            email = s.split(";")[0];
+            fullName = s.split(";")[1] + " " + s.split(";")[2];
+        }
+        emailTextView.setText(email);
+        fullNameTextView.setText(fullName);
     }
 
     private void logoutUser() {

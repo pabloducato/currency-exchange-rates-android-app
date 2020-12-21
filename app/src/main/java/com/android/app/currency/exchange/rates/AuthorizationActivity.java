@@ -20,6 +20,7 @@ public class AuthorizationActivity extends AppCompatActivity {
         if (firebaseUser != null && firebaseUser.isEmailVerified()) {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("email", firebaseUser.getEmail());
             startActivity(intent);
             finish();
         } else {

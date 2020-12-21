@@ -23,6 +23,8 @@ import com.android.app.currency.exchange.rates.ResetPasswordActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Objects;
+
 public class LoginFragment extends Fragment {
 
     protected FirebaseAuth mAuth;
@@ -96,14 +98,16 @@ public class LoginFragment extends Fragment {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                assert firebaseUser != null;
                 if (firebaseUser.isEmailVerified()) {
                     Intent intent = new Intent(getContext(), MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra("email", email);
                     startActivity(intent);
                     Toast.makeText(getContext(), "Logowanie powiodło się!", Toast.LENGTH_LONG).show();
                     editTextEmail.setText("");
                     editTextPassword.setText("");
-                    getActivity().finish();
+                    Objects.requireNonNull(getActivity()).finish();
                 } else {
                     firebaseUser.sendEmailVerification();
                     Toast.makeText(getContext(), "Sprawdź swojego maila, aby zweryfikować utworzone konto!", Toast.LENGTH_LONG).show();

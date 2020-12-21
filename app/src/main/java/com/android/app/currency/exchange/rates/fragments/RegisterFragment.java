@@ -1,6 +1,8 @@
 package com.android.app.currency.exchange.rates.fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,7 +25,10 @@ import com.android.app.currency.exchange.rates.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class RegisterFragment extends Fragment {
 
@@ -32,6 +37,10 @@ public class RegisterFragment extends Fragment {
     protected FirebaseAuth mAuth;
     protected EditText editTextFirstName, editTextLastName, editTextEmail, editTextPassword, editTextConfirmPassword;
     protected ProgressBar registerProgressBar;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor sharedPreferencesEditor;
+    public static final String GLOBAL_SHARED_PREFERENCES_CREDENTIALS = "credentialsDB";
+
 
     @Nullable
     @Override
@@ -121,6 +130,14 @@ public class RegisterFragment extends Fragment {
             registerProgressBar.setVisibility(View.VISIBLE);
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
+
+                    sharedPreferences = Objects.requireNonNull(getContext()).getSharedPreferences(GLOBAL_SHARED_PREFERENCES_CREDENTIALS, Context.MODE_PRIVATE);
+                    sharedPreferencesEditor = sharedPreferences.edit();
+                    String myArray = email + ";" + firstName + ";" + lastName;
+                    Set<String> mySet = new HashSet<>(Collections.singletonList(myArray));
+                    sharedPreferences.edit().putStringSet(email, mySet).apply();
+                    sharedPreferencesEditor.apply();
+
                     User user = new User(firstName, lastName, email);
                     FirebaseDatabase.getInstance().getReference("Users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).setValue(user).addOnCompleteListener(task1 -> {
                         if (task1.isSuccessful()) {
