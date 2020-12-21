@@ -34,6 +34,8 @@ public class ResetPasswordFragment extends Fragment {
         resetPasswordProgressBar = fragmentView.findViewById(R.id.resetPasswordProgressBar);
         auth = FirebaseAuth.getInstance();
         resetPassword.setOnClickListener(v -> resetPassword());
+
+        super.onCreate(savedInstanceState);
         return fragmentView;
     }
 

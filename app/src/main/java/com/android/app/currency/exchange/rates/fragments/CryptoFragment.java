@@ -69,6 +69,7 @@ public class CryptoFragment extends Fragment implements CryptoAdapter.OnItemClic
             recyclerView.setAdapter(adapter);
         }
 
+        super.onCreate(savedInstanceState);
         return fragmentView;
     }
 

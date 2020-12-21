@@ -73,6 +73,7 @@ public class GoldFragment extends Fragment implements GoldAdapter.OnItemClickLis
             recyclerView.setAdapter(adapter);
         }
 
+        super.onCreate(savedInstanceState);
         return fragmentView;
     }
 

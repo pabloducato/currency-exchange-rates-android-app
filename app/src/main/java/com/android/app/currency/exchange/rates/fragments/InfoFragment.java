@@ -25,6 +25,8 @@ public class InfoFragment extends Fragment {
         animationDrawable.setEnterFadeDuration(2000);
         animationDrawable.setExitFadeDuration(2000);
         animationDrawable.start();
+
+        super.onCreate(savedInstanceState);
         return fragmentView;
     }
 }

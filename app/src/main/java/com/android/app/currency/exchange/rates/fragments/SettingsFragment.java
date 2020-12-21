@@ -62,6 +62,8 @@ public class SettingsFragment extends Fragment implements SettingAdapter.OnItemC
         SettingAdapter adapter = new SettingAdapter(settingsList, this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+
+        super.onCreate(savedInstanceState);
         return fragmentView;
     }
 

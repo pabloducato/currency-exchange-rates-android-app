@@ -69,6 +69,7 @@ public class GlobalFragment extends Fragment implements GlobalAdapter.OnItemClic
             recyclerView.setAdapter(adapter);
         }
 
+        super.onCreate(savedInstanceState);
         return fragmentView;
     }
 

@@ -63,6 +63,8 @@ public class LoginFragment extends Fragment {
             intent.setData(Uri.parse(url));
             startActivity(intent);
         });
+
+        super.onCreate(savedInstanceState);
         return fragmentView;
     }
 

@@ -104,6 +104,7 @@ public class MessagesFragment extends Fragment implements MessageAdapter.OnItemC
             recyclerView.setAdapter(adapter);
         }
 
+        super.onCreate(savedInstanceState);
         return fragmentView;
     }
 

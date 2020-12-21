@@ -89,6 +89,7 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
             recyclerView.setAdapter(adapter);
         }
 
+        super.onCreate(savedInstanceState);
         return fragmentView;
     }
 

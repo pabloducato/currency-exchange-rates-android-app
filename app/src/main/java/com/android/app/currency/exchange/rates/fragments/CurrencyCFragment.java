@@ -69,6 +69,7 @@ public class CurrencyCFragment extends Fragment implements CurrencyCAdapter.OnIt
             recyclerView.setAdapter(adapter);
         }
 
+        super.onCreate(savedInstanceState);
         return fragmentView;
     }
 

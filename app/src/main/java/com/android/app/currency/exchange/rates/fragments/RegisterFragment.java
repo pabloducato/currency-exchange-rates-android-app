@@ -75,6 +75,7 @@ public class RegisterFragment extends Fragment {
             startActivity(intent);
         });
 
+        super.onCreate(savedInstanceState);
         return fragmentView;
     }
 
