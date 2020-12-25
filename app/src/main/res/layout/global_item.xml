@@ -17,6 +17,7 @@
             android:id="@+id/global_image_view"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:contentDescription="@string/image"
             android:padding="2dp"
             app:tint="@color/old_gold" />
 
@@ -26,7 +27,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/global_image_view"
-            android:layout_toRightOf="@+id/global_image_view"
             android:text="Line 1"
             android:textColor="@color/tabColor1"
             android:textSize="12sp"
@@ -38,7 +38,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/global_rate_abbreviation"
             android:layout_alignStart="@+id/global_rate_abbreviation"
-            android:layout_alignLeft="@+id/global_rate_abbreviation"
             android:layout_alignParentTop="false"
             android:text="999"
             android:textColor="@color/tabColor1"
@@ -51,7 +50,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/global_rate_value"
             android:layout_alignStart="@+id/global_rate_value"
-            android:layout_alignLeft="@+id/global_rate_value"
             android:layout_alignParentTop="false"
             android:text="Line 2"
             android:textColor="@color/tabColor1"

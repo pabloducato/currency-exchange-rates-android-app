@@ -18,6 +18,7 @@
             android:id="@+id/setting_image_view"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:contentDescription="@string/image"
             android:padding="2dp"
             app:tint="@color/imageItemColor" />
 
@@ -27,7 +28,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/setting_image_view"
-            android:layout_toRightOf="@+id/setting_image_view"
             android:text="Line 1"
             android:textColor="@color/tabColor1"
             android:textSize="12sp"

@@ -17,6 +17,7 @@
             android:id="@+id/internet_exception_image_view"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:contentDescription="@string/image"
             android:padding="2dp"
             app:tint="@color/imageItemColor" />
 
