@@ -52,7 +52,6 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
     SimpleDateFormat time_format = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
     SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

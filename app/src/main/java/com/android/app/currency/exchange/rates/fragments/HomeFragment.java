@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +20,7 @@ import com.android.app.currency.exchange.rates.items.NavigationItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment implements NavigationAdapter.OnItemClickListener {
 
@@ -33,16 +36,20 @@ public class HomeFragment extends Fragment implements NavigationAdapter.OnItemCl
         animationDrawable.setEnterFadeDuration(2000);
         animationDrawable.setExitFadeDuration(2000);
         animationDrawable.start();
+        if (navigationList != null || navigationList.size() > 0) {
+            navigationList.clear();
+        }
 
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
 
-        bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation);
+        bottomNavigationView = Objects.requireNonNull(getActivity()).findViewById(R.id.bottom_navigation);
 
         navigationList.add(new NavigationItem(R.drawable.ic_baseline_format_list_bulleted_24, "Waluty"));
         navigationList.add(new NavigationItem(R.drawable.ic_baseline_settings_24, "Ustawienia"));
         navigationList.add(new NavigationItem(R.drawable.ic_baseline_info_24, "Informacje"));
         navigationList.add(new NavigationItem(R.drawable.ic_baseline_notifications_none_24, "Wiadomości"));
+        navigationList.add(new NavigationItem(R.drawable.ic_baseline_qr_code_scanner_24, "Skaner kodów QR"));
 
         NavigationAdapter adapter = new NavigationAdapter(navigationList, this);
         recyclerView.setLayoutManager(layoutManager);
@@ -57,19 +64,27 @@ public class HomeFragment extends Fragment implements NavigationAdapter.OnItemCl
         switch (position) {
             case 0:
                 bottomNavigationView.setSelectedItemId(R.id.nav_view_list);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new ListFragment()).commit();
+                Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new ListFragment()).commit();
                 break;
             case 1:
                 bottomNavigationView.setSelectedItemId(R.id.nav_settings);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new SettingsFragment()).commit();
+                Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new SettingsFragment()).commit();
                 break;
             case 2:
                 bottomNavigationView.setSelectedItemId(R.id.nav_info);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new InfoFragment()).commit();
+                Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new InfoFragment()).commit();
                 break;
             case 3:
                 bottomNavigationView.setSelectedItemId(R.id.nav_notifications);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new MessagesFragment()).commit();
+                Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new MessagesFragment()).commit();
+                break;
+            case 4:
+                ScannerFragment scannerFragment = new ScannerFragment();
+                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_second_container, scannerFragment, "scanner");
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
                 break;
         }
     }
