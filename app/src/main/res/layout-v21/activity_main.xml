@@ -36,8 +36,7 @@
                 android:background="@color/design_default_color_primary"
                 android:elevation="4dp"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                tools:targetApi="lollipop" />
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
         </LinearLayout>
 

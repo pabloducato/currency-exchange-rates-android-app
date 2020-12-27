@@ -15,7 +15,6 @@
     <color name="silver">#C0C0C0</color>
     <color name="holo_purple">#A14BDC</color>
     <color name="transparent">#00000000</color>
-
     <color name="mainBackground">#484848</color>
     <color name="panelBackground">#000000</color>
     <color name="tabColor1">#FFFFFF</color>
@@ -23,5 +22,4 @@
     <color name="backgroundTheme1">#484848</color>
     <color name="backgroundTheme2">#6E5E1B</color>
     <color name="backgroundTheme3">#484848</color>
-
 </resources>

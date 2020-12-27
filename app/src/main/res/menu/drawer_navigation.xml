@@ -6,22 +6,27 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/drawer_navigation_home"
+            android:checked="false"
             android:icon="@drawable/ic_baseline_home_24"
             android:title="Dom" />
         <item
             android:id="@+id/drawer_navigation_list"
+            android:checked="false"
             android:icon="@drawable/ic_baseline_format_list_bulleted_24"
             android:title="Waluty" />
         <item
             android:id="@+id/drawer_navigation_settings"
+            android:checked="false"
             android:icon="@drawable/ic_baseline_settings_24"
             android:title="Ustawienia" />
         <item
             android:id="@+id/drawer_navigation_info"
+            android:checked="false"
             android:icon="@drawable/ic_baseline_info_24"
             android:title="Informacje" />
         <item
             android:id="@+id/drawer_navigation_notifications"
+            android:checked="false"
             android:icon="@drawable/ic_baseline_notifications_none_24"
             android:title="Wiadomości" />
     </group>

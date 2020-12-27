@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="splashScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+        <item name="android:statusBarColor">@color/gray</item>
+    </style>
+
+    <style name="TopNavigationTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/holo_purple</item>
+        <item name="android:textColorSecondary">@color/tabColor1</item>
+    </style>
+
+    <style name="BottomNavigationTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/holo_purple</item>
+        <item name="android:textColorSecondary">@color/tabColor1</item>
+    </style>
+
+    <style name="NavigationViewTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/holo_purple</item>
+        <item name="android:textColorSecondary">@color/tabColor1</item>
+        <item name="itemTextColor">@color/tabColor1</item>
+    </style>
+
+</resources>
