@@ -50,6 +50,7 @@ public class HomeFragment extends Fragment implements NavigationAdapter.OnItemCl
         navigationList.add(new NavigationItem(R.drawable.ic_baseline_info_24, "Informacje"));
         navigationList.add(new NavigationItem(R.drawable.ic_baseline_notifications_none_24, "Wiadomości"));
         navigationList.add(new NavigationItem(R.drawable.ic_baseline_qr_code_scanner_24, "Skaner kodów QR"));
+        navigationList.add(new NavigationItem(R.drawable.ic_baseline_calculate_24, "Kalkulator"));
 
         NavigationAdapter adapter = new NavigationAdapter(navigationList, this);
         recyclerView.setLayoutManager(layoutManager);
@@ -85,6 +86,14 @@ public class HomeFragment extends Fragment implements NavigationAdapter.OnItemCl
                 fragmentTransaction.replace(R.id.fragment_second_container, scannerFragment, "scanner");
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+                break;
+            case 5:
+                CalculatorFragment calculatorFragment = new CalculatorFragment();
+                FragmentManager fragmentManagerCalc = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                FragmentTransaction fragmentTransactionCalc = fragmentManagerCalc.beginTransaction();
+                fragmentTransactionCalc.replace(R.id.fragment_second_container, calculatorFragment, "calculator");
+                fragmentTransactionCalc.addToBackStack(null);
+                fragmentTransactionCalc.commit();
                 break;
         }
     }
