@@ -44,6 +44,7 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
 
     private final ArrayList<OptionItem> optionList = new ArrayList<>();
     private final ArrayList<String> currencyAList = new ArrayList<>();
+    private final ArrayList<String> currencyBList = new ArrayList<>();
     private final ArrayList<String> currencyCList = new ArrayList<>();
     private final ArrayList<String> goldList = new ArrayList<>();
     private final ArrayList<String> cryptoList = new ArrayList<>();
@@ -71,6 +72,7 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
         if (isNetworkAvailable(Objects.requireNonNull(getContext()))) {
             try {
                 optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut NBP tabela A w PLN", "Waluty", "Opis"));
+                optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut NBP tabela B w PLN", "Waluty", "Opis"));
                 optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut NBP tabela C w PLN", "Waluty", "Opis"));
                 optionList.add(new OptionItem(R.drawable.ic_baseline_star_24, "Kursy złota", "Złoto", "Opis"));
                 optionList.add(new OptionItem(R.drawable.ic_baseline_monetization_on_24, "Kursy kryptowalut", "Kryptowaluty", "Opis"));
@@ -107,31 +109,72 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
                 break;
             case 1:
                 requestQueue = VolleySingleton.getInstance(getContext()).getRequestQueue();
+                dateString = validateDateTableBString();
+                URL = "https://api.nbp.pl/api/exchangerates/tables/B/" + dateString + "/" + "?format=json";
+                jsonArrayRequest = returnJsonCurrencyTableBArrayRequest(URL);
+                requestQueue.add(jsonArrayRequest);
+                break;
+            case 2:
+                requestQueue = VolleySingleton.getInstance(getContext()).getRequestQueue();
                 dateString = validateDateString();
                 URL = "https://api.nbp.pl/api/exchangerates/tables/C/" + dateString + "/" + "?format=json";
                 jsonArrayRequest = returnJsonCurrencyTableCArrayRequest(URL);
                 requestQueue.add(jsonArrayRequest);
                 break;
-            case 2:
+            case 3:
                 requestQueue = VolleySingleton.getInstance(getContext()).getRequestQueue();
                 dateString = validateDateString();
                 URL = "https://api.nbp.pl/api/cenyzlota/" + dateString + "/" + "?format=json";
                 jsonArrayRequest = returnJsonGoldArrayRequest(URL);
                 requestQueue.add(jsonArrayRequest);
                 break;
-            case 3:
+            case 4:
                 requestQueue = VolleySingleton.getInstance(getContext()).getRequestQueue();
                 URL = "https://api.coincap.io/v2/assets/?format=json";
                 jsonObjectRequest = returnJsonCryptoObjectRequest(URL);
                 requestQueue.add(jsonObjectRequest);
                 break;
-            case 4:
+            case 5:
                 requestQueue = VolleySingleton.getInstance(getContext()).getRequestQueue();
                 URL = "https://api.coincap.io/v2/rates/?format=json";
                 jsonObjectRequest = returnJsonGlobalCurrencyObjectRequest(URL);
                 requestQueue.add(jsonObjectRequest);
                 break;
         }
+    }
+
+    private String validateDateTableBString() {
+        Calendar calendar = Calendar.getInstance();
+        Date date;
+        String dateString;
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat sdfHour = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        String hour = sdfHour.format(calendar.getTime());
+        String start = "00:00";
+        String stop = "12:00";
+        boolean b = hour.compareTo(start) >= 0 && hour.compareTo(stop) <= 0;
+        if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+            calendar.add(Calendar.DATE, -2);
+            date = calendar.getTime();
+            dateString = dateFormat.format(date);
+        } else if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+            calendar.add(Calendar.DATE, -3);
+            date = calendar.getTime();
+            dateString = dateFormat.format(date);
+        } else if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY && (b)) {
+            calendar.add(Calendar.DATE, -3);
+            date = calendar.getTime();
+            dateString = dateFormat.format(date);
+        } else if ((calendar.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY || calendar.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY) && (b)) {
+            calendar.add(Calendar.DATE, -2);
+            date = calendar.getTime();
+            dateString = dateFormat.format(date);
+        } else {
+            calendar.add(Calendar.DATE, -1);
+            date = calendar.getTime();
+            dateString = dateFormat.format(date);
+        }
+        return dateString;
     }
 
     private String validateDateString() {
@@ -190,6 +233,38 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_second_container, currencyAFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, Throwable::printStackTrace);
+    }
+
+    private JsonArrayRequest returnJsonCurrencyTableBArrayRequest(String URL) {
+        return new JsonArrayRequest(Request.Method.GET, URL, null, response -> {
+            try {
+                if (currencyBList != null || currencyBList.size() > 0) {
+                    currencyBList.clear();
+                }
+                JSONObject ratesList = response.getJSONObject(0);
+                JSONArray rates = ratesList.getJSONArray("rates");
+                for (int i = 0; i < rates.length(); i++) {
+                    JSONObject rate = rates.getJSONObject(i);
+                    String currency = rate.getString("currency");
+                    String code = rate.getString("code");
+                    double mid = rate.getDouble("mid");
+                    if (mid < 0.1) mid = 0.01;
+                    currencyBList.add(i, currency + ";" + code + ";" + mid);
+                }
+                CurrencyBFragment currencyBFragment = new CurrencyBFragment();
+                Bundle bundle = new Bundle();
+                String[] arrayCurrencyList = currencyBList.toArray(new String[0]);
+                bundle.putStringArray("currencyTableB", arrayCurrencyList);
+                currencyBFragment.setArguments(bundle);
+                FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_second_container, currencyBFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             } catch (JSONException e) {
