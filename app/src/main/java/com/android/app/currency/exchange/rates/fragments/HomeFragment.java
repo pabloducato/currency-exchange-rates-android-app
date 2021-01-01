@@ -45,10 +45,6 @@ public class HomeFragment extends Fragment implements NavigationAdapter.OnItemCl
 
         bottomNavigationView = Objects.requireNonNull(getActivity()).findViewById(R.id.bottom_navigation);
 
-        navigationList.add(new NavigationItem(R.drawable.ic_baseline_format_list_bulleted_24, "Waluty"));
-        navigationList.add(new NavigationItem(R.drawable.ic_baseline_settings_24, "Ustawienia"));
-        navigationList.add(new NavigationItem(R.drawable.ic_baseline_info_24, "Informacje"));
-        navigationList.add(new NavigationItem(R.drawable.ic_baseline_notifications_none_24, "Wiadomości"));
         navigationList.add(new NavigationItem(R.drawable.ic_baseline_qr_code_scanner_24, "Skaner kodów QR"));
         navigationList.add(new NavigationItem(R.drawable.ic_baseline_calculate_24, "Kalkulator"));
 
@@ -64,22 +60,6 @@ public class HomeFragment extends Fragment implements NavigationAdapter.OnItemCl
     public void onItemClick(int position) {
         switch (position) {
             case 0:
-                bottomNavigationView.setSelectedItemId(R.id.nav_view_list);
-                Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new ListFragment()).commit();
-                break;
-            case 1:
-                bottomNavigationView.setSelectedItemId(R.id.nav_settings);
-                Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new SettingsFragment()).commit();
-                break;
-            case 2:
-                bottomNavigationView.setSelectedItemId(R.id.nav_info);
-                Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new InfoFragment()).commit();
-                break;
-            case 3:
-                bottomNavigationView.setSelectedItemId(R.id.nav_notifications);
-                Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_second_container, new MessagesFragment()).commit();
-                break;
-            case 4:
                 ScannerFragment scannerFragment = new ScannerFragment();
                 FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -87,7 +67,7 @@ public class HomeFragment extends Fragment implements NavigationAdapter.OnItemCl
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 break;
-            case 5:
+            case 1:
                 CalculatorFragment calculatorFragment = new CalculatorFragment();
                 FragmentManager fragmentManagerCalc = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 FragmentTransaction fragmentTransactionCalc = fragmentManagerCalc.beginTransaction();

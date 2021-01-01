@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +29,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -99,12 +102,17 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
         String dateString, URL;
         JsonArrayRequest jsonArrayRequest;
         JsonObjectRequest jsonObjectRequest;
+        RequestQueue requestQueue;
         switch (position) {
             case 0:
-                RequestQueue requestQueue = VolleySingleton.getInstance(getContext()).getRequestQueue();
+                requestQueue = VolleySingleton.getInstance(getContext()).getRequestQueue();
                 dateString = validateDateString();
                 URL = "https://api.nbp.pl/api/exchangerates/tables/A/" + dateString + "/" + "?format=json";
                 jsonArrayRequest = returnJsonCurrencyTableAArrayRequest(URL);
+                jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                        2000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                 requestQueue.add(jsonArrayRequest);
                 break;
             case 1:
@@ -112,6 +120,10 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
                 dateString = validateDateTableBString();
                 URL = "https://api.nbp.pl/api/exchangerates/tables/B/" + dateString + "/" + "?format=json";
                 jsonArrayRequest = returnJsonCurrencyTableBArrayRequest(URL);
+                jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                        2000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                 requestQueue.add(jsonArrayRequest);
                 break;
             case 2:
@@ -119,6 +131,10 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
                 dateString = validateDateString();
                 URL = "https://api.nbp.pl/api/exchangerates/tables/C/" + dateString + "/" + "?format=json";
                 jsonArrayRequest = returnJsonCurrencyTableCArrayRequest(URL);
+                jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                        2000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                 requestQueue.add(jsonArrayRequest);
                 break;
             case 3:
@@ -126,19 +142,34 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
                 dateString = validateDateString();
                 URL = "https://api.nbp.pl/api/cenyzlota/" + dateString + "/" + "?format=json";
                 jsonArrayRequest = returnJsonGoldArrayRequest(URL);
+                jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                        2000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                 requestQueue.add(jsonArrayRequest);
                 break;
             case 4:
                 requestQueue = VolleySingleton.getInstance(getContext()).getRequestQueue();
                 URL = "https://api.coincap.io/v2/assets/?format=json";
                 jsonObjectRequest = returnJsonCryptoObjectRequest(URL);
+                jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                        2000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                 requestQueue.add(jsonObjectRequest);
                 break;
             case 5:
                 requestQueue = VolleySingleton.getInstance(getContext()).getRequestQueue();
                 URL = "https://api.coincap.io/v2/rates/?format=json";
                 jsonObjectRequest = returnJsonGlobalCurrencyObjectRequest(URL);
+                jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                        2000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                 requestQueue.add(jsonObjectRequest);
+                break;
+            default:
+                Toast.makeText(getContext(), "W tej chwili zawartość nie jest dostępna", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -209,8 +240,10 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
         return dateString;
     }
 
+    @NotNull
+    @Contract("_ -> new")
     private JsonArrayRequest returnJsonCurrencyTableAArrayRequest(String URL) {
-        return new JsonArrayRequest(Request.Method.GET, URL, null, response -> {
+        return (JsonArrayRequest) new JsonArrayRequest(Request.Method.GET, URL, null, response -> {
             try {
                 if (currencyAList != null || currencyAList.size() > 0) {
                     currencyAList.clear();
@@ -238,11 +271,13 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }, Throwable::printStackTrace);
+        }, Throwable::printStackTrace).setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     private JsonArrayRequest returnJsonCurrencyTableBArrayRequest(String URL) {
-        return new JsonArrayRequest(Request.Method.GET, URL, null, response -> {
+        return (JsonArrayRequest) new JsonArrayRequest(Request.Method.GET, URL, null, response -> {
             try {
                 if (currencyBList != null || currencyBList.size() > 0) {
                     currencyBList.clear();
@@ -270,11 +305,13 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }, Throwable::printStackTrace);
+        }, Throwable::printStackTrace).setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     private JsonArrayRequest returnJsonCurrencyTableCArrayRequest(String URL) {
-        return new JsonArrayRequest(Request.Method.GET, URL, null, response -> {
+        return (JsonArrayRequest) new JsonArrayRequest(Request.Method.GET, URL, null, response -> {
             try {
                 if (currencyCList != null || currencyCList.size() > 0) {
                     currencyCList.clear();
@@ -304,11 +341,13 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }, Throwable::printStackTrace);
+        }, Throwable::printStackTrace).setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     private JsonArrayRequest returnJsonGoldArrayRequest(String URL) {
-        return new JsonArrayRequest(Request.Method.GET, URL, null, response -> {
+        return (JsonArrayRequest) new JsonArrayRequest(Request.Method.GET, URL, null, response -> {
             try {
                 if (goldList != null || goldList.size() > 0) {
                     goldList.clear();
@@ -330,7 +369,9 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }, Throwable::printStackTrace);
+        }, Throwable::printStackTrace).setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     private JsonObjectRequest returnJsonCryptoObjectRequest(String URL) {
@@ -362,7 +403,7 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
                 e.printStackTrace();
             }
         }, Throwable::printStackTrace).setRetryPolicy(new DefaultRetryPolicy(
-                0,
+                5000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
@@ -395,7 +436,7 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
                 e.printStackTrace();
             }
         }, Throwable::printStackTrace).setRetryPolicy(new DefaultRetryPolicy(
-                0,
+                5000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }

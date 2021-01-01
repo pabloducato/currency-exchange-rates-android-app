@@ -49,6 +49,7 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.OptionView
 
         @Override
         public void onClick(View v) {
+            v.setOnClickListener(null);
             onItemClickListener.onItemClick(getAdapterPosition());
         }
     }

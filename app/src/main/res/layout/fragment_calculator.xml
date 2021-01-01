@@ -2,21 +2,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mainBackground">
+    android:background="@drawable/gradient_light_list">
+
+    <LinearLayout
+        android:id="@+id/calculator_linear_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/gradient_light_list">
 
         <LinearLayout
             android:id="@+id/main_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="vertical"
-            android:padding="5dp">
+            android:orientation="vertical">
 
             <EditText
                 android:id="@+id/calculation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:enabled="false"
+                android:inputType="none"
+                android:paddingTop="100dp"
                 android:textAlignment="textEnd"
                 android:textColor="@color/tabColor1"
                 android:textSize="30sp"
@@ -26,6 +33,9 @@
                 android:id="@+id/calculation_result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:enabled="false"
+                android:inputType="none"
                 android:textAlignment="textEnd"
                 android:textColor="@color/tabColor1"
                 android:textSize="30sp"
@@ -34,37 +44,347 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
+                android:layout_margin="0dp"
                 android:orientation="horizontal"
+                android:padding="0dp"
                 android:weightSum="1">
 
                 <Button
-                    android:id="@+id/btbEdit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:text="Edit" />
+                    android:id="@+id/btnCalculatorName"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="0.1dp"
+                    android:layout_weight="1"
+                    android:background="@color/panelBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="5dp"
+                    android:text="KALKULATOR"
+                    android:textColor="@color/tabColor1"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="0dp"
+                android:orientation="horizontal"
+                android:padding="0dp"
+                android:weightSum="1">
 
                 <Button
-                    android:id="@+id/btnDelete"
+                    android:id="@+id/btnClear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="0.1dp"
                     android:layout_weight="0.5"
-                    android:text="Delete" />
+                    android:background="@color/panelBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="5dp"
+                    android:text="WYCZYŚĆ"
+                    android:textColor="@color/tabColor1"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btnRemove"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0.1dp"
+                    android:layout_weight="0.5"
+                    android:background="@color/panelBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="5dp"
+                    android:text="USUŃ"
+                    android:textColor="@color/tabColor1"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="0sp"
+                android:orientation="horizontal"
+                android:padding="0dp"
+                android:weightSum="1">
+
+                <Button
+                    android:id="@+id/button_seven"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0.1dp"
+                    android:layout_weight="0.25"
+                    android:background="@color/panelBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="5dp"
+                    android:text="7"
+                    android:textColor="@color/tabColor1"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/button_eight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0.1dp"
+                    android:layout_weight="0.25"
+                    android:background="@color/panelBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="5dp"
+                    android:text="8"
+                    android:textColor="@color/tabColor1"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/button_nine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0.1dp"
+                    android:layout_weight="0.25"
+                    android:background="@color/panelBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="5dp"
+                    android:text="9"
+                    android:textColor="@color/tabColor1"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/button_division"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0.1dp"
+                    android:layout_weight="0.25"
+                    android:background="@color/panelBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="5dp"
+                    android:text="/"
+                    android:textColor="@color/tabColor1"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="0sp"
+                android:orientation="horizontal"
+                android:padding="0dp"
+                android:weightSum="1">
+
+                <Button
+                    android:id="@+id/button_four"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0.1dp"
+                    android:layout_weight="0.25"
+                    android:background="@color/panelBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="5dp"
+                    android:text="4"
+                    android:textColor="@color/tabColor1"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/button_five"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0.1dp"
+                    android:layout_weight="0.25"
+                    android:background="@color/panelBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="5dp"
+                    android:text="5"
+                    android:textColor="@color/tabColor1"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/button_six"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0.1dp"
+                    android:layout_weight="0.25"
+                    android:background="@color/panelBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="5dp"
+                    android:text="6"
+                    android:textColor="@color/tabColor1"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/button_multiplication"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0.1dp"
+                    android:layout_weight="0.25"
+                    android:background="@color/panelBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="5dp"
+                    android:text="*"
+                    android:textColor="@color/tabColor1"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="0sp"
+                android:orientation="horizontal"
+                android:padding="0dp"
+                android:weightSum="1">
+
+                <Button
+                    android:id="@+id/button_one"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0.1dp"
+                    android:layout_weight="0.25"
+                    android:background="@color/panelBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="5dp"
+                    android:text="1"
+                    android:textColor="@color/tabColor1"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/button_two"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0.1dp"
+                    android:layout_weight="0.25"
+                    android:background="@color/panelBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="5dp"
+                    android:text="2"
+                    android:textColor="@color/tabColor1"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/button_three"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0.1dp"
+                    android:layout_weight="0.25"
+                    android:background="@color/panelBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="5dp"
+                    android:text="3"
+                    android:textColor="@color/tabColor1"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/button_subtraction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0.1dp"
+                    android:layout_weight="0.25"
+                    android:background="@color/panelBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="5dp"
+                    android:text="-"
+                    android:textColor="@color/tabColor1"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_margin="0sp"
+                android:orientation="horizontal"
+                android:padding="0dp"
+                android:weightSum="1">
+
+                <Button
+                    android:id="@+id/button_point"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0.1dp"
+                    android:layout_weight="0.25"
+                    android:background="@color/panelBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="5dp"
+                    android:text="."
+                    android:textColor="@color/tabColor1"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/button_zero"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0.1dp"
+                    android:layout_weight="0.25"
+                    android:background="@color/panelBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="5dp"
+                    android:text="0"
+                    android:textColor="@color/tabColor1"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/button_sum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0.1dp"
+                    android:layout_weight="0.25"
+                    android:background="@color/panelBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="5dp"
+                    android:text="="
+                    android:textColor="@color/tabColor1"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/button_addition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0.1dp"
+                    android:layout_weight="0.25"
+                    android:background="@color/panelBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="5dp"
+                    android:text="+"
+                    android:textColor="@color/tabColor1"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
         </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/calculator_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:layout_marginBottom="?attr/actionBarSize"
-        android:background="@drawable/gradient_light_list"
-        android:padding="5dp"
-        android:scrollbars="vertical">
-
-    </androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
 
 </RelativeLayout>
