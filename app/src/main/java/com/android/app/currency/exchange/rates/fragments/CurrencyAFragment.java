@@ -54,7 +54,7 @@ public class CurrencyAFragment extends Fragment implements CurrencyAAdapter.OnIt
         if (isNetworkAvailable(Objects.requireNonNull(getContext())) && arrayCurrencyList != null) {
             try {
                 for (String s : arrayCurrencyList) {
-                    currencyList.add(new CurrencyAItem(R.drawable.ic_baseline_euro_24, s.split(";")[0], s.split(";")[1], s.split(";")[2].substring(0, 4), s.split(";")[2].substring(0, 4)));
+                    currencyList.add(new CurrencyAItem(R.drawable.ic_baseline_euro_24, s.split(";")[0], s.split(";")[1], s.split(";")[2].substring(0, 4), "ZŁ" + s.split(";")[2].substring(0, 4)));
                 }
                 CurrencyAAdapter adapter = new CurrencyAAdapter(currencyList, this);
                 recyclerView.setLayoutManager(layoutManager);

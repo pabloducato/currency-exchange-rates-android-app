@@ -34,7 +34,7 @@ public class CurrencyBFragment extends Fragment implements CurrencyBAdapter.OnIt
         assert getArguments() != null;
         String[] arrayCurrencyList = getArguments().getStringArray("currencyTableB");
         for (String s : arrayCurrencyList) {
-            currencyList.add(new CurrencyBItem(R.drawable.ic_baseline_euro_24, s.split(";")[0], s.split(";")[1], s.split(";")[2].substring(0, 4), s.split(";")[2].substring(0, 4)));
+            currencyList.add(new CurrencyBItem(R.drawable.ic_baseline_euro_24, s.split(";")[0], s.split(";")[1], s.split(";")[2].substring(0, 4), "ZŁ" + s.split(";")[2].substring(0, 4)));
         }
         recyclerView = fragmentView.findViewById(R.id.currency_b_recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -47,15 +47,6 @@ public class CurrencyBFragment extends Fragment implements CurrencyBAdapter.OnIt
 
     @Override
     public void onItemClick(int position) {
-//        Intent intent;
-//        switch (position) {
-//            default:
-//                Log.d(TAG, "onItemClick: clicked.");
-//                intent = new Intent(getActivity(), CurrencyActivity.class);
-//                intent.putExtra("some_object", "something_else");
-//                startActivity(intent);
-//                break;
-//        }
     }
 
     @Override

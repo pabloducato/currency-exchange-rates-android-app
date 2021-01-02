@@ -54,7 +54,7 @@ public class CryptoFragment extends Fragment implements CryptoAdapter.OnItemClic
         if (isNetworkAvailable(Objects.requireNonNull(getContext()))) {
             try {
                 for (String s : arrayCryptoList) {
-                    cryptoList.add(new CryptoItem(R.drawable.ic_baseline_euro_24, s.split(";")[0], s.split(";")[1], s.split(";")[3].substring(0, 4), s.split(";")[2].substring(0, 8)));
+                    cryptoList.add(new CryptoItem(R.drawable.ic_baseline_euro_24, s.split(";")[0], s.split(";")[1], s.split(";")[3].substring(0, 4), "$" + s.split(";")[2].substring(0, 8)));
                 }
                 CryptoAdapter adapter = new CryptoAdapter(cryptoList, this);
                 recyclerView.setLayoutManager(layoutManager);

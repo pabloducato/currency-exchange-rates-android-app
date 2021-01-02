@@ -28,7 +28,7 @@
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/currency_b_image_view"
             android:text="Line 1"
-            android:textColor="@color/black"
+            android:textColor="@color/tabColor1"
             android:textSize="12sp"
             android:textStyle="bold" />
 
@@ -40,7 +40,7 @@
             android:layout_alignStart="@+id/currency_b_rate_abbreviation"
             android:layout_alignParentTop="false"
             android:text="999"
-            android:textColor="@color/black"
+            android:textColor="@color/tabColor1"
             android:textSize="12sp"
             android:textStyle="bold" />
 
@@ -60,10 +60,10 @@
             android:id="@+id/currency_b_rate_big_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/currency_b_rate_description"
-            android:layout_alignBottom="@+id/currency_b_rate_description"
-            android:layout_marginStart="190dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:layout_marginTop="1dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginBottom="1dp"
             android:text="999"
             android:textColor="@color/dark_green"

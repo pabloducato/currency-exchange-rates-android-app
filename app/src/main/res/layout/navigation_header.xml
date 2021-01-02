@@ -10,8 +10,6 @@
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <!--    android:background="@color/purple_500"-->
-
     <ImageView
         android:id="@+id/header_image"
         android:layout_width="wrap_content"

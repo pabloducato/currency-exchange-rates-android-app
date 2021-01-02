@@ -59,7 +59,7 @@ public class GoldFragment extends Fragment implements GoldAdapter.OnItemClickLis
 
         if (isNetworkAvailable(Objects.requireNonNull(getContext())) && price != null) {
             try {
-                goldList.add(new GoldItem(R.drawable.ic_baseline_star_24, arrayGoldString.split(";")[0], "Cena 1g (próba 1000)", price, price));
+                goldList.add(new GoldItem(R.drawable.ic_baseline_star_24, arrayGoldString.split(";")[0], "Cena 1g (próba 1000)", price, "ZŁ" + price));
             } catch (Exception e) {
                 e.printStackTrace();
             }
