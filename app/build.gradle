@@ -7,7 +7,7 @@ android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "com.android.app.currency.exchange.rates"
+        applicationId "com.main.app.currency.exchange.rates"
         minSdkVersion 17
         targetSdkVersion 30
         versionCode 1

@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:364488906129:android:b17d3e5f30010394d2f630",
         "android_client_info": {
-          "package_name": "com.android.app.currency.exchange.rates"
+          "package_name": "com.main.app.currency.exchange.rates"
         }
       },
       "oauth_client": [

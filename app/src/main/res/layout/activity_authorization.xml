@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".AuthorizationActivity"
+        tools:context="com.main.app.currency.exchange.rates.AuthorizationActivity"
         tools:openDrawer="start">
 
         <FrameLayout

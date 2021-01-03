@@ -11,7 +11,7 @@
         android:fitsSystemWindows="true"
         android:orientation="vertical"
         android:padding="10dp"
-        tools:context=".LoginAfterRegistrationActivity">
+        tools:context="com.main.app.currency.exchange.rates.LoginAfterRegistrationActivity">
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.android.app.currency.exchange.rates">
+    package="com.main.app.currency.exchange.rates">
 
     <application
         android:allowBackup="true"
@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Currencyexchangeratesandroidapp">
         <activity
-            android:name=".AuthorizationActivity"
+            android:name="com.main.app.currency.exchange.rates.AuthorizationActivity"
             android:theme="@style/splashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,17 +20,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.main.app.currency.exchange.rates.MainActivity"
             android:screenOrientation="sensorPortrait"
             android:stateNotNeeded="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden"
             tools:replace="screenOrientation" />
         <activity
-            android:name=".LoginAfterRegistrationActivity"
+            android:name="com.main.app.currency.exchange.rates.LoginAfterRegistrationActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".ResetPasswordActivity"
+            android:name="com.main.app.currency.exchange.rates.ResetPasswordActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
