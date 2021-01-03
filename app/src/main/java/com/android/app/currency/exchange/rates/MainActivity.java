@@ -323,8 +323,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void showStartDialog() {
         new AlertDialog.Builder(this)
-                .setTitle("One Time Dialog")
-                .setMessage("This should only be shown once")
+                .setTitle("Kursy walut i informacje")
+                .setMessage("Witaj w aplikacji mobilnej")
                 .setPositiveButton("ok", (dialogInterface, i) -> dialogInterface.dismiss())
                 .create().show();
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferences", MODE_PRIVATE);

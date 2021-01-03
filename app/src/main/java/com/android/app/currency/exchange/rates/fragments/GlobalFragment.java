@@ -54,11 +54,11 @@ public class GlobalFragment extends Fragment implements GlobalAdapter.OnItemClic
         if (isNetworkAvailable(Objects.requireNonNull(getContext())) && arrayGlobalCurrencyList != null) {
             try {
                 for (String s : arrayGlobalCurrencyList) {
-                    globalList.add(new GlobalItem(R.drawable.ic_baseline_euro_24, s.split(";")[0], s.split(";")[1], s.split(";")[2].substring(0, 3)));
+                    globalList.add(new GlobalItem(R.drawable.ic_baseline_euro_24, s.split(";")[0], s.split(";")[1], s.split(";")[3].matches("null") ? "Brak symbolu" : "Symbol: " + s.split(";")[3], s.split(";")[2].length() >= 8 ? "$" + s.split(";")[2].substring(0, 8) : "$" + s.split(";")[2].substring(0, 3) + "00000"));
                 }
-                GlobalAdapter adapter = new GlobalAdapter(globalList, this);
+                GlobalAdapter adapter1 = new GlobalAdapter(globalList, this);
                 recyclerView.setLayoutManager(layoutManager);
-                recyclerView.setAdapter(adapter);
+                recyclerView.setAdapter(adapter1);
             } catch (Exception e) {
                 e.printStackTrace();
             }

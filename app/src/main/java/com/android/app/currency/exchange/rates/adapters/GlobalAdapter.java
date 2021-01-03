@@ -22,7 +22,6 @@ public class GlobalAdapter extends RecyclerView.Adapter<GlobalAdapter.GlobalView
     public GlobalAdapter(ArrayList<GlobalItem> items, GlobalAdapter.OnItemClickListener onItemClickListener) {
         this.mGlobalList = items;
         this.mOnItemClickListener = onItemClickListener;
-
     }
 
     public interface OnItemClickListener {
@@ -35,6 +34,7 @@ public class GlobalAdapter extends RecyclerView.Adapter<GlobalAdapter.GlobalView
         public TextView rateAbbreviation;
         public TextView rateValue;
         public TextView rateDescription;
+        public TextView ratePrice;
         GlobalAdapter.OnItemClickListener onItemClickListener;
 
         public GlobalViewHolder(@NonNull View itemView, GlobalAdapter.OnItemClickListener onItemClickListener) {
@@ -43,6 +43,7 @@ public class GlobalAdapter extends RecyclerView.Adapter<GlobalAdapter.GlobalView
             rateAbbreviation = itemView.findViewById(R.id.global_rate_abbreviation);
             rateValue = itemView.findViewById(R.id.global_rate_value);
             rateDescription = itemView.findViewById(R.id.global_rate_description);
+            ratePrice = itemView.findViewById(R.id.global_rate_price);
             this.onItemClickListener = onItemClickListener;
             itemView.setOnClickListener(this);
         }
@@ -67,6 +68,7 @@ public class GlobalAdapter extends RecyclerView.Adapter<GlobalAdapter.GlobalView
         holder.rateAbbreviation.setText(currentItem.getRateAbbreviation());
         holder.rateValue.setText(currentItem.getRateValue());
         holder.rateDescription.setText(currentItem.getRateDescription());
+        holder.ratePrice.setText(currentItem.getRatePrice());
     }
 
     @Override

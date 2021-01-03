@@ -69,7 +69,7 @@ public class RegisterFragment extends Fragment {
         });
         serviceTextView.setPaintFlags(serviceTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         serviceTextView.setOnClickListener(v -> {
-            String url = "https://www.linkedin.com/in/paweł-k-597919142";
+            String url = "https://pabloducato.github.io/kursy-walut-i-informacje/terms_conditions.html";
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(url));
             startActivity(intent);

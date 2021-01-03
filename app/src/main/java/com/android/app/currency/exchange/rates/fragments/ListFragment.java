@@ -74,12 +74,12 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
 
         if (isNetworkAvailable(Objects.requireNonNull(getContext()))) {
             try {
-                optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut NBP tabela A w PLN", "Waluty", "Opis"));
-                optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut NBP tabela B w PLN", "Waluty", "Opis"));
-                optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut NBP tabela C w PLN", "Waluty", "Opis"));
-                optionList.add(new OptionItem(R.drawable.ic_baseline_star_24, "Kursy złota", "Złoto", "Opis"));
-                optionList.add(new OptionItem(R.drawable.ic_baseline_monetization_on_24, "Kursy kryptowalut", "Kryptowaluty", "Opis"));
-                optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut globalnych w USD", "Waluty", "Opis"));
+                optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut NBP tabela A w PLN", "Waluty", "Żródło: NBP Web API"));
+                optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut NBP tabela B w PLN", "Waluty", "Żródło: NBP Web API"));
+                optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut NBP tabela C w PLN", "Waluty", "Żródło: NBP Web API"));
+                optionList.add(new OptionItem(R.drawable.ic_baseline_star_24, "Kursy złota", "Złoto", "Żródło: NBP Web API"));
+                optionList.add(new OptionItem(R.drawable.ic_baseline_monetization_on_24, "Kursy kryptowalut", "Kryptowaluty", "Żródło: CoinCap API 2.0"));
+                optionList.add(new OptionItem(R.drawable.ic_baseline_euro_24, "Kursy walut globalnych w USD", "Waluty", "Żródło: CoinCap API 2.0"));
                 OptionAdapter adapter = new OptionAdapter(optionList, this);
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(adapter);
@@ -420,7 +420,8 @@ public class ListFragment extends Fragment implements OptionAdapter.OnItemClickL
                     String id = globalCurrency.getString("id");
                     String symbol = globalCurrency.getString("symbol");
                     double rateUsd = globalCurrency.getDouble("rateUsd");
-                    globalCurrencyList.add(i, id + ";" + symbol + ";" + rateUsd);
+                    String currencySymbol = globalCurrency.getString("currencySymbol");
+                    globalCurrencyList.add(i, id + ";" + symbol + ";" + rateUsd + ";" + currencySymbol);
                 }
                 GlobalFragment globalFragment = new GlobalFragment();
                 Bundle bundle = new Bundle();

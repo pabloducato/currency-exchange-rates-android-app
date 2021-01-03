@@ -1,6 +1,8 @@
 package com.android.app.currency.exchange.rates.fragments;
 
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,11 +42,14 @@ public class InfoFragment extends Fragment implements AuthorAdapter.OnItemClickL
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
 
         authorList.add(new AuthorItem(R.drawable.ic_baseline_policy_24, "Informacje prawne",
-                "Kursy walut i informacje © 2020 Paweł Zbigniew Kocan. Wszelkie prawa zastrzeżone.", "https://www.linkedin.com/in/paweł-k-597919142"));
+                "Kursy walut i informacje © 2020-2021 Paweł Zbigniew Kocan. Wszelkie prawa zastrzeżone.", "https://www.linkedin.com/in/paweł-k-597919142"));
+        authorList.add(new AuthorItem(R.drawable.ic_baseline_policy_24, "Informacje i polityka prywatności",
+                "Wszelkie informacje związane z przetwarzaniem danych niezbędnym do prawidłowego uwierzytelnienia użytkownika oraz polityką prywatności aplikacji " +
+                        "dostępne są pod następującym adresem:\n" + "https://pabloducato.github.io/kursy-walut-i-informacje/", "https://pabloducato.github.io/kursy-walut-i-informacje/"));
         authorList.add(new AuthorItem(R.drawable.ic_baseline_policy_24, "Wspomóż autora darowizną",
-                "Jeżeli chcesz wesprzeć autora w działaniach związanych z utrzymaniem i promocją serwisu, a także pomóc w realizacji przyszłych projektów, możesz zrobić to tutaj: https://tipply.pl/u/pabloducato.", "https://tipply.pl/u/pabloducato"));
+                "Jeżeli chcesz wesprzeć autora w działaniach związanych z utrzymaniem i promocją serwisu, a także pomóc w realizacji przyszłych projektów, możesz zrobić to tutaj:\n" + "https://tipply.pl/u/pabloducato", "https://tipply.pl/u/pabloducato"));
         authorList.add(new AuthorItem(R.drawable.ic_baseline_policy_24, "Prawa autorskie", "Serwis api.nbp.pl udostępnia publiczne Web API umożliwiające " +
-                "klientom HTTP wykonywanie zapytań na zbiorach danych publikowanych przez serwis NBP.PL.", "https://api.nbp.pl/"));
+                "klientom HTTP wykonywanie zapytań na zbiorach danych publikowanych przez serwis NBP.PL", "https://api.nbp.pl/"));
         authorList.add(new AuthorItem(R.drawable.ic_baseline_policy_24, "Deklaracja dostępności", "Narodowy Bank Polski zobowiązuje się" +
                 "zapewnić dostępność swojej strony internetowej zgodnie z przepisami ustawy z dnia 4 " +
                 "kwietnia 2019 r. o dostępności cyfrowej stron internetowych i aplikacji mobilnych " +
@@ -74,6 +79,11 @@ public class InfoFragment extends Fragment implements AuthorAdapter.OnItemClickL
 
     @Override
     public void onItemClick(int position) {
-
+        if (authorList.size() > 0) {
+            String url = authorList.get(position).getAuthorLink();
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            startActivity(intent);
+        }
     }
 }
